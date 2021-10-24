@@ -4,7 +4,7 @@ Boğaziçi University SWE573-2021-Fall Course Project Repo by Haydar Sinan Yıld
 You will see the nature of my project during the 2021 Spring Term here! It will be updated regularly.
 
 **You can see my weekly effort in terms of task, duration and type of work in [the effort tracking page in my Wiki](https://github.com/haydarsinan/SWE573-2021-Fall/wiki/My-Effort-Tracking-Table).**
-**Also you can reach wiki pages here, issues here, project planning progress here and milestones here.
+**Also you can reach [wiki pages here](https://github.com/haydarsinan/SWE573-2021-Fall/wiki), [issues here](https://github.com/haydarsinan/SWE573-2021-Fall/issues), [project planning progress here](https://github.com/haydarsinan/SWE573-2021-Fall/projects) and [milestones here](https://github.com/haydarsinan/SWE573-2021-Fall/milestones).
 
 In the project, the service sharing application will be developed. 
 Details:
