@@ -7,5 +7,10 @@ CreateApp: python manage.py startapp ServicEventPool
 Add new app to apps in Settings
 URL Revisions from urls.py (add include to import)
 
+python manage.py migrate
+Create Tables from Models:  python manage.py makemigrations
+python manage.py migrate
+
+
 * PgAdmin
 * 

@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Service
+from .models import Event
+from .models import User
+from .models import Location
+
+admin.site.register(Service)
+admin.site.register(Event)
+admin.site.register(User)
+admin.site.register(Location)
+
