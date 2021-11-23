@@ -1,0 +1,16 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+
+    <h1>Welcome to EVENT LIST PAGE</h1>
+    {% for event in event_list %}
+        <strong>Name: </strong>{{ event }}<br>
+        <strong>Description: </strong>{{ event.description }}<br>
+        <strong>Duration: </strong>{{ event.duration_credit }}<br>
+        <strong>Location: </strong>{{ event.location }}<br>
+        <strong>Attendees:</strong>{{ event.attendees }}<br><br>
+    {% endfor %}
+
+
+{% endblock %}
