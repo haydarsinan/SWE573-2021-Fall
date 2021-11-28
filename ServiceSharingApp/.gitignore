@@ -78,7 +78,7 @@ celerybeat-schedule
 .env
 
 # virtualenv
-venv/
+../venv/
 ENV/
 
 # front end
@@ -98,7 +98,7 @@ bundle.js.map
 # VS code project settings
 .vscode
 
-.idea/*
+.idea/vcs.xml
 
 settings_local.py
 
@@ -115,4 +115,4 @@ static_core/package-lock.json
 src/
 *.sqlite3
 
-data/*
+data
