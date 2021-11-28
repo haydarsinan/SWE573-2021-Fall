@@ -11,6 +11,11 @@ python manage.py migrate
 Create Tables from Models:  python manage.py makemigrations
 python manage.py migrate
 
+## How to run on Docker
 
-* PgAdmin
-* 
+```bash
+$ docker rmi -f $(docker images -a -q)
+$ docker container prune
+$ docker-compose up --build
+$ docker exec -it servicesharingapp_web_1 /bin/bash
+```
