@@ -92,15 +92,15 @@ WSGI_APPLICATION = 'ServiceSharingApp.wsgi.application'
 #     }
 # }
 
-#Local PostgreSQL Database Settings
+# #Local PostgreSQL Database Settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'postgres2',
         'USER': 'postgres',
         'PASSWORD': '1175103',
         'HOST': 'localhost',
-        'PORT': 5432
+
     }
 }
 

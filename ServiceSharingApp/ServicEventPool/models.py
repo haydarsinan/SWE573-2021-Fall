@@ -35,11 +35,16 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     slug = models.URLField(blank=True, null=True)
     # location = models.CharField(max_length=300, blank=True, null=True)
-    location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.CASCADE)
-    attendees = models.ManyToManyField(User, blank=True)
+    location = models.TextField(blank=True, null=True)
+    attendees = models.TextField(blank=True, null=True)
+
+    # Change models of location and attendees!!
+    # location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.CASCADE)
+    # attendees = models.ManyToManyField(User, blank=True)
 
     def __str__(self):
         return self.name
+
 
 class Service(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)
@@ -49,8 +54,12 @@ class Service(models.Model):
     slug = models.URLField(blank=True, null=True)
     # location = models.CharField(max_length=300, blank=True, null=True)
     duration_credit = models.PositiveIntegerField();
-    service_provider = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.CASCADE)
+    service_provider = models.TextField(blank=True, null=True)
+    location = models.TextField(blank=True, null=True)
+
+    # Change models of location, provider, and lists!!
+    # service_provider = models.ForeignKey(User, on_delete=models.CASCADE)
+    # location = models.ForeignKey(Location, blank=True, null=True, on_delete=models.CASCADE)
     # request_list = models.ManyToManyField(User, blank=True)
     # approved_list = models.ManyToManyField(User, blank=True)
 
