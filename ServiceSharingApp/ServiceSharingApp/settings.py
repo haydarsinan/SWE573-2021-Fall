@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-2lfr(4oan^n)9#9n-d4856*)1%7xxyl8u+^a0$6a0u=2v*q#0+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1', '0.0.0.0:5000', 'mysterious-castle-17802.herokuapp.com']
 
 # Application definition
 
@@ -93,16 +93,29 @@ WSGI_APPLICATION = 'ServiceSharingApp.wsgi.application'
 # }
 
 # #Local PostgreSQL Database Settings
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres2',
+#         'USER': 'postgres',
+#         'PASSWORD': '1175103',
+#         'HOST': 'localhost',
+#
+#     }
+# }
+
+# HEROKU PostgreSQL Database Settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres2',
-        'USER': 'postgres',
-        'PASSWORD': '1175103',
-        'HOST': 'localhost',
-
+        'NAME': 'd1p9r78k8tqfai',
+        'USER': 'ygxtjfdfzgytxp',
+        'PASSWORD': '76be2035a9086a0f8fea141271f97faaaa6205d74463b0dd699fcaeca7a1da18',
+        'HOST': 'ec2-52-7-30-112.compute-1.amazonaws.com',
+        'PORT': 5432
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -139,6 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
