@@ -9,25 +9,6 @@ class Location(models.Model):
         return self.name
 
 
-class User(models.Model):
-    username = models.CharField(max_length=300, blank=True, null=True)
-    email = models.EmailField()
-    firstname = models.CharField(max_length=30)
-    lastname = models.CharField(max_length=30)
-
-    # telephone =
-    # location =
-    # time_credit =
-    # password =
-    # event_created =
-    # event_attended =
-    # service_given =
-    # service_taken =
-
-    def __str__(self):
-        return self.username
-
-
 class Event(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)
     event_date = models.DateTimeField()

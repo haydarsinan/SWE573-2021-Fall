@@ -15,6 +15,12 @@
   <body>
     {% include 'ServicEventPool/navbar.html' %}
 
+                  <div class="col-sm-3" style="float: right">
+                    {% if user.is_authenticated %}
+                    {% include 'ServicEventPool/sidebar.html' %}
+                    {% endif %}
+                  </div>
+
     <div class="container">
         {% if messages %}
             {% for message in messages %}
