@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from Members.forms import signUpForm
+from Members.forms import signUpForm, editProfilePage
 
 
 def login_user(request):
@@ -43,20 +43,18 @@ def register_user(request):
         'form': form,
     })
 
-def update_user(request):
 
+def update_user(request):
     if request.method == "POST":
-        form = UserChangeForm(request.POST)
+        form = editProfilePage(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "You successfully updated!")
             return redirect('home')
     else:
-        user = request.user.username
-        form = UserChangeForm(initial={'username' : user})
-        # return render(request, 'authentication/update_profile.html', {
-        #     'form': form,
-        # })
+        user = request.user
+        form = editProfilePage(initial={'username': user.username, 'first_name': user.first_name,
+                                        'last_name': user.last_name, 'email': user.email})
     return render(request, 'authentication/update_profile.html', {
         'form': form,
     })
