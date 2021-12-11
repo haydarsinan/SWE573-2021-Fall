@@ -92,29 +92,29 @@ WSGI_APPLICATION = 'ServiceSharingApp.wsgi.application'
 #     }
 # }
 
-# #Local PostgreSQL Database Settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres2',
-#         'USER': 'postgres',
-#         'PASSWORD': '1175103',
-#         'HOST': 'localhost',
-#
-#     }
-# }
-
-# HEROKU PostgreSQL Database Settings
+#Local PostgreSQL Database Settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd1p9r78k8tqfai',
-        'USER': 'ygxtjfdfzgytxp',
-        'PASSWORD': '76be2035a9086a0f8fea141271f97faaaa6205d74463b0dd699fcaeca7a1da18',
-        'HOST': 'ec2-52-7-30-112.compute-1.amazonaws.com',
-        'PORT': 5432
+        'NAME': 'postgres2',
+        'USER': 'postgres',
+        'PASSWORD': '1175103',
+        'HOST': 'localhost',
+
     }
 }
+
+# HEROKU PostgreSQL Database Settings
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'd1p9r78k8tqfai',
+#         'USER': 'ygxtjfdfzgytxp',
+#         'PASSWORD': '76be2035a9086a0f8fea141271f97faaaa6205d74463b0dd699fcaeca7a1da18',
+#         'HOST': 'ec2-52-7-30-112.compute-1.amazonaws.com',
+#         'PORT': 5432
+#     }
+# }
 
 
 # Password validation
