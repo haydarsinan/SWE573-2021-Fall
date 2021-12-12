@@ -14,6 +14,7 @@ urlpatterns = [
     path('<int:year>/<str:month>', views.calendar, name="calendar"),
     path('services', views.all_services, name="service_list"),
     path('events', views.all_events, name="event_list"),
+    path('profile', views.profile_page, name="profile_page"),
 
     path('add_location', views.add_location, name="add_location"),
     path('add_event', views.add_event, name="add_event"),

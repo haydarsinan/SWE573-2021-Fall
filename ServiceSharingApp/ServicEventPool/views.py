@@ -7,8 +7,6 @@ from .forms import ServiceForm
 from django.http import HttpResponseRedirect
 
 
-# Create your views here.
-
 def home(request):
     serviceName = "I like Baklava with Olive Oil :)"
     return render(request, 'ServicEventPool/home.html', {
@@ -24,6 +22,10 @@ def calendar(request, year, month):
         "month_Here": month
     })
 
+def profile_page(request):
+    user = request.user
+    return render(request, 'ServicEventPool/profile_page.html',
+                  {'user': user})
 
 def all_services(request):
     service_list = Service.objects.all()

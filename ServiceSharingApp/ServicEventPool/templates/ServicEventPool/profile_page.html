@@ -1,0 +1,12 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+
+    <h1>Profile Page</h1>
+
+    {{ user.profile.bio }}
+    <img src="{{ user.profile.profile_pic.url }}">
+
+
+{% endblock %}

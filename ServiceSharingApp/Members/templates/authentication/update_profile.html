@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    {{ user.profile.bio }}
+
     {% if form.errors %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 There is an error with your form!
