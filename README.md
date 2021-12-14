@@ -1,3 +1,5 @@
+Before anything else, deployed application link is: http://servicevent.online
+
 # SWE573-2021-Fall
 Boğaziçi University SWE573-2021-Fall Course Project Repo by Haydar Sinan Yıldırım
 
