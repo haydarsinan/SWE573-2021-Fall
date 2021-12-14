@@ -5,6 +5,9 @@
 
     <h1>Welcome to SERVICE LIST PAGE</h1>
     {% for service in service_list %}
+        <a href = "{% url 'service_details' slug=service.slug %}">
+              {{ service.name }}
+        </a>
         <strong>Name: </strong>{{ service }}<br>
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Duration: </strong>{{ service.duration_credit }}<br>

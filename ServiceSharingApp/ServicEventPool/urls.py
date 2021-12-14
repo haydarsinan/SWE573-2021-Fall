@@ -20,4 +20,7 @@ urlpatterns = [
     path('add_event', views.add_event, name="add_event"),
     path('add_service', views.add_service, name="add_service"),
 
+    path('event_details/<slug:slug>', views.event_details, name="event_details"),
+    path('service_details/<slug:slug>', views.service_details, name="service_details"),
+
 ]

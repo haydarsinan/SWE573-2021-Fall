@@ -5,6 +5,7 @@ from .forms import LocationForm
 from .forms import EventForm
 from .forms import ServiceForm
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 
 
 def home(request):
@@ -87,3 +88,13 @@ def add_service(request):
         'form': form,
         'submitted': submitted,
     })
+
+def event_details(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    return render(request, 'ServicEventPool/event_details.html',
+                  {'event': event})
+
+def service_details(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    return render(request, 'ServicEventPool/service_details.html',
+                  {'service': service})
