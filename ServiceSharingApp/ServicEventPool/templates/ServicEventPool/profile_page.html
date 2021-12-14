@@ -5,6 +5,8 @@
 
     <h1>Profile Page</h1>
 
+    {{ user.first_name }}
+    {{ user.last_name }}
     {{ user.profile.bio }}
     {{ user.profile.timeCredit }}
     <img src="{{ user.profile.profile_pic.url }}">

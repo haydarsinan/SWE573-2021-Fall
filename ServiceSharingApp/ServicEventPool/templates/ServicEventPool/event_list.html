@@ -11,7 +11,11 @@
         <strong>Name: </strong>{{ event }}<br>
         <strong>Description: </strong>{{ event.description }}<br>
         <strong>Location: </strong>{{ event.location }}<br>
-        <strong>Attendees:</strong>{{ event.attendees }}<br><br>
+        <strong>Attendees:</strong><br>
+        {% for attendee in event.attendees.all %}
+                    <li>{{ attendee }}</li>
+        {% endfor %}
+        <br>
     {% endfor %}
 
 

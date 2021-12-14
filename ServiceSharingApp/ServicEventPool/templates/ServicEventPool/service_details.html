@@ -8,7 +8,11 @@
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Location: </strong>{{ service.location }}<br>
         <strong>Service Provider: </strong>{{ service.service_provider }}<br>
-        <strong>Attendees:</strong>{{ service.attendees }}<br><br>
+        <strong>Attendees:</strong>
+        {% for attendee in service.attendees.all %}
+                    <li>{{ attendee }}</li>
+        {% endfor %}
+        <br>
 
     <form action="{% url 'register_user' %}" method="post">
     {% csrf_token %}
