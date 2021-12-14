@@ -35,12 +35,10 @@ class Event(models.Model):
     event_publish_date = models.CharField(max_length=300, blank=True, null=True)
     description = models.TextField(blank=True)
     slug = AutoSlugField(populate_from='name', unique=True, default="")
-
-    # Change models of location and attendees!!
-    event_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE)
+    event_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_event_provider')
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
-
-    # attendees = models.ManyToManyField(Profile, blank=True)
+    applicants = models.ManyToManyField(User, default="", blank=True, related_name='user_event_applicants')
+    attendees = models.ManyToManyField(User, default="", blank=True, related_name='user_event_attendees')
 
     def __str__(self):
         return self.name
@@ -53,13 +51,10 @@ class Service(models.Model):
     description = models.TextField(blank=True)
     slug = AutoSlugField(populate_from='name', unique=True, default="")
     duration_credit = models.PositiveIntegerField();
-
-    # Change models of location, provider, and lists!!
-    service_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE)
+    service_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_service_provider')
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
-
-    # request_list = models.ManyToManyField(Profile, blank=True)
-    # approved_list = models.ManyToManyField(Profile, blank=True)
+    applicants = models.ManyToManyField(User, default="", blank=True, related_name='user_service_applicants')
+    attendees = models.ManyToManyField(User, default="", blank=True, related_name='user_service_attendees')
 
     def __str__(self):
         return self.name

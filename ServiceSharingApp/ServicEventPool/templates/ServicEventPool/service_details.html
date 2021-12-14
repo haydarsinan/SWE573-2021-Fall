@@ -7,7 +7,27 @@
         <strong>Name: </strong>{{ service }}<br>
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Location: </strong>{{ service.location }}<br>
+        <strong>Service Provider: </strong>{{ service.service_provider }}<br>
         <strong>Attendees:</strong>{{ service.attendees }}<br><br>
 
+    <form action="{% url 'register_user' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Submit" class="btn btn-secondary">
+    </form>
+
+    <input class="btn btn-outline-success" type="submit" value="Request Service">
+    <button class="btn btn-primary" onclick="goBack()">Go Back to Service List</button>
+    <button class="btn btn-primary" onclick="reload()">Reload</button>
+
+    <script>
+function goBack() {
+  window.history.back();
+}
+function reload() {
+  location.reload();
+}
+</script>
 
 {% endblock %}
