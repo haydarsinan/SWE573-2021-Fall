@@ -13,7 +13,7 @@ Create Tables from Models:  python manage.py makemigrations
 python manage.py migrate
 ```
 
-## How to run on Docker
+## How to run on Docker, Last Line is CLI in Docker
 
 ```bash
 $ docker rmi -f $(docker images -a -q)
