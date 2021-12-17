@@ -6,6 +6,7 @@ from .forms import EventForm
 from .forms import ServiceForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 
 
 def home(request):
@@ -98,3 +99,19 @@ def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
     return render(request, 'ServicEventPool/service_details.html',
                   {'service': service})
+
+def apply_service(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    return render(request, 'ServicEventPool/service_details.html',
+                  {'service': service})
+    # user = request.user
+    # service = get_object_or_404(Service, slug=slug)
+    # print(service.name)
+    # if service.objects.filter(applicants=user.id):
+    #     messages.success(request, "You have already requested this service!")
+    #     return redirect('service_details')
+    # else:
+    #     service.applicants.add(user)
+    #     messages.success(request, "You successfully requested for the service!")
+    #     return render(request, 'ServicEventPool/apply_service.html',
+    #                   {'service': service})

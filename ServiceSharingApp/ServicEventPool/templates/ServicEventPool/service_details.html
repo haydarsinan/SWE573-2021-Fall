@@ -8,20 +8,19 @@
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Location: </strong>{{ service.location }}<br>
         <strong>Service Provider: </strong>{{ service.service_provider }}<br>
+        <strong>Applicants:</strong>
+        {% for applicant in service.applicants.all %}
+                    <li>{{ applicant }}</li>
+        {% endfor %}
         <strong>Attendees:</strong>
         {% for attendee in service.attendees.all %}
                     <li>{{ attendee }}</li>
         {% endfor %}
         <br>
 
-    <form action="{% url 'register_user' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <a class="btn btn-primary" href="{% url 'apply_service' slug=service.slug %}">Request Service</a>
 
-    <input type="submit" value="Submit" class="btn btn-secondary">
-    </form>
-
-    <input class="btn btn-outline-success" type="submit" value="Request Service">
+{#    <input class="btn btn-outline-success"  type="submit" value="Request Service">#}
     <button class="btn btn-primary" onclick="goBack()">Go Back to Service List</button>
     <button class="btn btn-primary" onclick="reload()">Reload</button>
 
@@ -33,5 +32,11 @@ function reload() {
   location.reload();
 }
 </script>
+
+{#    <a target="_blank"#}
+{#    class="btn btn-info pull-right"#}
+{#    href="{% url 'apply_service' service.slug %}">#}
+{#    Request#}
+{#</a>#}
 
 {% endblock %}

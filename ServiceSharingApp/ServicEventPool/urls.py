@@ -23,4 +23,6 @@ urlpatterns = [
     path('event_details/<slug:slug>', views.event_details, name="event_details"),
     path('service_details/<slug:slug>', views.service_details, name="service_details"),
 
+    path('apply_service/<slug:slug>', views.apply_service, name="apply_service"),
+
 ]
