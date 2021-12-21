@@ -7,6 +7,7 @@ from autoslug import AutoSlugField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    slug = AutoSlugField(populate_from='pk', unique=True)
     bio = models.TextField()
     profile_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/profilePictures/")
     linkedinURL = models.CharField(max_length=255, null=True, blank=True)
@@ -55,6 +56,5 @@ class Service(models.Model):
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
     applicants = models.ManyToManyField(User, default="", blank=True, related_name='user_service_applicants')
     attendees = models.ManyToManyField(User, default="", blank=True, related_name='user_service_attendees')
-
     def __str__(self):
         return self.name

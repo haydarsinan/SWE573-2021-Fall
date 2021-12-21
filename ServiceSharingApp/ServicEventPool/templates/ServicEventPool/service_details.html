@@ -12,17 +12,21 @@
         {% for applicant in service.applicants.all %}
                     <li>{{ applicant }}</li>
         {% endfor %}
+        <a href = "{% url 'approve_service' slug=service.slug %}"> Go to Request List </a><br>
         <strong>Attendees:</strong>
         {% for attendee in service.attendees.all %}
                     <li>{{ attendee }}</li>
         {% endfor %}
         <br>
 
-    <a class="btn btn-primary" href="{% url 'apply_service' slug=service.slug %}">Request Service</a>
+    <br>
+    <form method="POST" action="">{% csrf_token %}
+    <button class="btn btn-primary" type="submit">Request Service</button>
+    </form>
+    <br>
 
-{#    <input class="btn btn-outline-success"  type="submit" value="Request Service">#}
     <button class="btn btn-primary" onclick="goBack()">Go Back to Service List</button>
-    <button class="btn btn-primary" onclick="reload()">Reload</button>
+{#    <button class="btn btn-primary" onclick="reload()">Reload</button>#}
 
     <script>
 function goBack() {

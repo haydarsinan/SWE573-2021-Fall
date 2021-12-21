@@ -9,10 +9,34 @@
         <strong>Description: </strong>{{ event.description }}<br>
         <strong>Location: </strong>{{ event.location }}<br>
         <strong>Event Provider: </strong>{{ event.event_provider }}<br>
-        <strong>Attendees:</strong><br>
+        <strong>Applicants:</strong>
+        {% for applicant in event.applicants.all %}
+                    <li>{{ applicant }}</li>
+        {% endfor %}
+        <strong>Attendees:</strong>
         {% for attendee in event.attendees.all %}
                     <li>{{ attendee }}</li>
         {% endfor %}
         <br>
+
+        <br>
+    <form method="POST" action="">{% csrf_token %}
+    <button class="btn btn-primary" type="submit">Join Event</button>
+    </form>
+    <br>
+
+
+    <button class="btn btn-primary" onclick="goBack()">Go Back to Event List</button>
+{#    <button class="btn btn-primary" onclick="reload()">Reload</button>#}
+
+    <script>
+function goBack() {
+  window.history.back();
+}
+function reload() {
+  location.reload();
+}
+</script>
+
 
 {% endblock %}

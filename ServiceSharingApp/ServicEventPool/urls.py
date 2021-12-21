@@ -15,6 +15,7 @@ urlpatterns = [
     path('services', views.all_services, name="service_list"),
     path('events', views.all_events, name="event_list"),
     path('profile', views.profile_page, name="profile_page"),
+    path('profile/<int:id>', views.profile_page_others, name="profile_page_others"),
 
     path('add_location', views.add_location, name="add_location"),
     path('add_event', views.add_event, name="add_event"),
@@ -23,6 +24,6 @@ urlpatterns = [
     path('event_details/<slug:slug>', views.event_details, name="event_details"),
     path('service_details/<slug:slug>', views.service_details, name="service_details"),
 
-    path('apply_service/<slug:slug>', views.apply_service, name="apply_service"),
+    path('attendees/<slug:slug>', views.approve_service, name="approve_service"),
 
 ]

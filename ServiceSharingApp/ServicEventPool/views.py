@@ -7,6 +7,7 @@ from .forms import ServiceForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from .models import Profile
 
 
 def home(request):
@@ -24,10 +25,16 @@ def calendar(request, year, month):
         "month_Here": month
     })
 
+
 def profile_page(request):
     user = request.user
     return render(request, 'ServicEventPool/profile_page.html',
                   {'user': user})
+
+def profile_page_others(request, id):
+    profile = get_object_or_404(Profile, pk=id)
+    return render(request, 'ServicEventPool/profile_page_others.html',
+                  {'profile': profile})
 
 def all_services(request):
     service_list = Service.objects.all()
@@ -74,6 +81,7 @@ def add_event(request):
         'submitted': submitted,
     })
 
+
 def add_service(request):
     submitted = False
     if request.method == "POST":
@@ -90,20 +98,54 @@ def add_service(request):
         'submitted': submitted,
     })
 
+
 def event_details(request, slug):
     event = get_object_or_404(Event, slug=slug)
-    return render(request, 'ServicEventPool/event_details.html',
-                  {'event': event})
+    if request.method == "POST":
+        event = get_object_or_404(Event, slug=slug)
+        user = request.user
+        event.applicants.add(user)
+        context = {
+            'event': event
+        }
+        return render(request, 'ServicEventPool/event_details.html', context)
+    else:
+        return render(request, 'ServicEventPool/event_details.html',
+                      {'event': event})
+
 
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    return render(request, 'ServicEventPool/service_details.html',
-                  {'service': service})
+    if request.method == "POST":
+        service = get_object_or_404(Service, slug=slug)
+        user = request.user
+        service.applicants.add(user)
+        context = {
+            'service': service
+        }
+        return render(request, 'ServicEventPool/service_details.html', context)
+    else:
+        return render(request, 'ServicEventPool/service_details.html',
+                      {'service': service})
 
-def apply_service(request, slug):
+def approve_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    return render(request, 'ServicEventPool/service_details.html',
-                  {'service': service})
+    applicants = service.applicants.name
+    print(applicants)
+    attendee = request.GET.get('attendee')
+    if request.method == "POST":
+        user = attendee
+        service.applicants.remove(user)
+        service.attendees.add(user)
+        context = {
+            'service': service,
+            'applicants': applicants
+        }
+        return render(request, 'ServicEventPool/service_applications.html', context)
+    else:
+        return render(request, 'ServicEventPool/service_applications.html',
+                        {'service': service})
+
     # user = request.user
     # service = get_object_or_404(Service, slug=slug)
     # print(service.name)
