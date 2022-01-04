@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from Members.forms import signUpForm, editProfilePage
+from ServicEventPool.models import Profile
 
 
 def login_user(request):
@@ -34,6 +35,8 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
+            newProfile = Profile.objects.create(user=user)
+            newProfile.save()
             login(request, user)
             messages.success(request, "You successfully registered!")
             return redirect('home')

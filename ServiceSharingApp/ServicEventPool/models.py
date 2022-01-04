@@ -14,7 +14,7 @@ class Profile(models.Model):
     instagramURL = models.CharField(max_length=255, null=True, blank=True)
     twitterURL = models.CharField(max_length=255, null=True, blank=True)
     timeCredit = models.PositiveIntegerField(default=5, validators=[
-        MaxValueValidator(100),
+        MaxValueValidator(15),
         MinValueValidator(1)
     ])
 

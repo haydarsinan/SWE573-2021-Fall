@@ -4,12 +4,12 @@
 
 
     <h1>Profile Page</h1>
-    {{ user.username }}
-    {{ user.first_name }}
-    {{ user.last_name }}
-    {{ user.profile.bio }}
-    {{ user.profile.timeCredit }}
-    <img src="{{ user.profile.profile_pic.url }}">
+    <strong><a>User Name: </a></strong> {{ user.username }}<br>
+    <strong><a>Name: </a></strong>{{ user.first_name }}<br>
+    <strong><a>Surname: </a></strong>{{ user.last_name }}<br>
+    <strong><a>Biography: </a></strong>{{ user.profile.bio }}<br>
+    <strong><a>Credit: </a></strong> {{ user.profile.timeCredit }}<br>
+{#    <img src="{{ user.profile.profile_pic.url }}">#}
 
 
 {% endblock %}
