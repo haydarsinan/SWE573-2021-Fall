@@ -40,6 +40,8 @@ class Event(models.Model):
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
     applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_applicants')
     attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_attendees')
+    declinedList = models.ManyToManyField(User, default="", null=True, blank=True,
+                                          related_name='user_event_declinedlist')
 
     def __str__(self):
         return self.name
@@ -56,5 +58,6 @@ class Service(models.Model):
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
     applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_applicants')
     attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_attendees')
+    declinedList = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_declinedlist')
     def __str__(self):
         return self.name

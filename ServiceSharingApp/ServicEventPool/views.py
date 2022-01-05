@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from .models import Profile
+from django.db.models import Q
 
 
 def home(request):
@@ -28,8 +29,27 @@ def calendar(request, year, month):
 
 def profile_page(request):
     user = request.user
+    services = Service.objects.all()
+    events = Event.objects.all()
+    servicesCreated = services.filter(Q(service_provider=user))
+    servicesApplied = services.filter(Q(applicants__username=user))
+    servicesApproved = services.filter(Q(attendees__username=user))
+    servicesDeclined = services.filter(Q(declinedList__username=user))
+    eventsCreated = events.filter(Q(event_provider=user))
+    eventsApplied = events.filter(Q(applicants__username=user))
+    eventsApproved = events.filter(Q(attendees__username=user))
+    eventsDeclined = events.filter(Q(declinedList__username=user))
     return render(request, 'ServicEventPool/profile_page.html',
-                  {'user': user})
+                  {'user': user,
+                   'servicesCreated': servicesCreated,
+                   'servicesApplied': servicesApplied,
+                   'servicesApproved': servicesApproved,
+                   'servicesDeclined': servicesDeclined,
+                   'eventsCreated': eventsCreated,
+                   'eventsApplied': eventsApplied,
+                   'eventsApproved': eventsApproved,
+                   'eventsDeclined': eventsDeclined
+                   })
 
 def profile_page_others(request, id):
     profile = get_object_or_404(Profile, pk=id)
@@ -176,6 +196,21 @@ def approve_applicant_service(request, slug, id):
 def unapprove_applicant_service(request, slug, id):
     service = get_object_or_404(Service, slug=slug)
     attendee = service.attendees.get(id=id)
+    service.applicants.add(attendee)
+    service.attendees.remove(attendee)
+    applicants = service.applicants.all()
+    attendees = service.attendees.all()
+    context = {
+        'service': service,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees/'+slug)
+
+
+def decline_applicant_service(request, slug, id):
+    service = get_object_or_404(Service, slug=slug)
+    applicant = service.applicant.get(id=id)
     service.applicants.add(attendee)
     service.attendees.remove(attendee)
     applicants = service.applicants.all()
