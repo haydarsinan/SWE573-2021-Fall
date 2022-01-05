@@ -130,13 +130,13 @@ def service_details(request, slug):
 
 def approve_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    applicants = service.applicants.name
-    print(applicants)
+    applicants = service.applicants.all()
+    # print(applicants.get(pk=5).profile.pk)
     attendee = request.GET.get('attendee')
     if request.method == "POST":
         user = attendee
-        service.applicants.remove(user)
         service.attendees.add(user)
+        service.applicants.remove(user)
         context = {
             'service': service,
             'applicants': applicants
@@ -144,7 +144,9 @@ def approve_service(request, slug):
         return render(request, 'ServicEventPool/service_applications.html', context)
     else:
         return render(request, 'ServicEventPool/service_applications.html',
-                        {'service': service})
+                        {'service': service,
+                         'applicants': applicants
+                         })
 
     # user = request.user
     # service = get_object_or_404(Service, slug=slug)
@@ -157,3 +159,30 @@ def approve_service(request, slug):
     #     messages.success(request, "You successfully requested for the service!")
     #     return render(request, 'ServicEventPool/apply_service.html',
     #                   {'service': service})
+
+
+def approve_applicant_service(request, slug, id):
+    service = get_object_or_404(Service, slug=slug)
+    applicant = service.applicants.get(id=id)
+    service.attendees.add(applicant)
+    service.applicants.remove(applicant)
+    applicants = service.applicants.all()
+    context = {
+        'service': service,
+        'applicants': applicants
+    }
+    return HttpResponseRedirect('/attendees/'+slug)
+
+def unapprove_applicant_service(request, slug, id):
+    service = get_object_or_404(Service, slug=slug)
+    attendee = service.attendees.get(id=id)
+    service.applicants.add(attendee)
+    service.attendees.remove(attendee)
+    applicants = service.applicants.all()
+    attendees = service.attendees.all()
+    context = {
+        'service': service,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees/'+slug)

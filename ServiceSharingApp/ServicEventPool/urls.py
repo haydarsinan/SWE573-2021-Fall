@@ -26,4 +26,7 @@ urlpatterns = [
 
     path('attendees/<slug:slug>', views.approve_service, name="approve_service"),
 
+    path('approve/<slug:slug>/<int:id>', views.approve_applicant_service, name="approve_applicant_service"),
+    path('unapprove/<slug:slug>/<int:id>', views.unapprove_applicant_service, name="unapprove_applicant_service"),
+
 ]

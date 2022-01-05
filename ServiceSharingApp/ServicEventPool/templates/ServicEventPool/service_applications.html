@@ -7,10 +7,10 @@
         <strong>Name: </strong>{{ service }}<br>
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Applicants:</strong><br>
-        {% for applicant in service.applicants.all %}
-                    <a href = "{% url 'profile_page_others' id=1 %}">{{ applicant }}</a>
-                <form method="POST" action="">{% csrf_token %}
-
+        {% for applicant in applicants %}
+                    <a href = "{% url 'profile_page_others' id=applicant.profile.id %}">{{ applicant }}</a>
+{#                <form method="POST" action="">{% csrf_token %}#}
+{##}
 {#                            <div class="col-md-3">#}
 {#             <select class="form-select" data-trigger="" name="attendee" value="{{ request.GET.attendee }}">#}
 {#                    <option selected disabled>Applicants:</option>#}
@@ -19,17 +19,20 @@
 {#                    {% endfor %}#}
 {#             </select>#}
 {#         </div>#}
+{##}
+{#                <button class="btn btn-primary" type="submit" >Approve</button>#}
+{#                </form>#}
+            <a href="{% url 'approve_applicant_service' service.slug applicant.id  %}">Approve New </a>
 
-                <button class="btn btn-primary" type="submit" >Approve</button>
-                </form>
         {% endfor %}
 
 
 
-
+        <br>
         <strong>Attendees:</strong>
         {% for attendee in service.attendees.all %}
-                    <li>{{ attendee }}</li>
+            <a href = "{% url 'profile_page_others' id=attendee.profile.id %}">{{ attendee }}</a>
+            <a href="{% url 'unapprove_applicant_service' service.slug attendee.id  %}">UnApprove</a>
         {% endfor %}
         <br>
 

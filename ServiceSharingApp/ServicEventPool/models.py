@@ -38,8 +38,8 @@ class Event(models.Model):
     slug = AutoSlugField(populate_from='name', unique=True, default="")
     event_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_event_provider')
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
-    applicants = models.ManyToManyField(User, default="", blank=True, related_name='user_event_applicants')
-    attendees = models.ManyToManyField(User, default="", blank=True, related_name='user_event_attendees')
+    applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_applicants')
+    attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_attendees')
 
     def __str__(self):
         return self.name
@@ -54,7 +54,7 @@ class Service(models.Model):
     duration_credit = models.PositiveIntegerField();
     service_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_service_provider')
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
-    applicants = models.ManyToManyField(User, default="", blank=True, related_name='user_service_applicants')
-    attendees = models.ManyToManyField(User, default="", blank=True, related_name='user_service_attendees')
+    applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_applicants')
+    attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_attendees')
     def __str__(self):
         return self.name
