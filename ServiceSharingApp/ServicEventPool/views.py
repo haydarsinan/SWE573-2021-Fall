@@ -112,7 +112,7 @@ def add_location(request):
 def add_event(request):
     submitted = False
     if request.method == "POST":
-        form = EventForm(request.POST)
+        form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/add_event?submitted=True')
@@ -129,7 +129,7 @@ def add_event(request):
 def add_service(request):
     submitted = False
     if request.method == "POST":
-        form = ServiceForm(request.POST)
+        form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/add_service?submitted=True')

@@ -4,7 +4,9 @@
 
 
     <h1>EVENT DETAILS</h1>
-
+        {% if event.event_pic %}
+            <img class="rounded" src="{{ event.event_pic.url }}" width="150" height="150">
+        {% endif %}
         <strong>Name: </strong>{{ event }}<br>
         <strong>Description: </strong>{{ event.description }}<br>
         <strong>Location: </strong>{{ event.location }}<br>

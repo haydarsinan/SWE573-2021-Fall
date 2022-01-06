@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 """
 Notes:
@@ -34,4 +36,4 @@ urlpatterns = [
     path('decline/<slug:slug>/<int:id>', views.decline_applicant_service, name="decline_applicant_service"),
 
     path('approve_service_transaction/<slug:slug>', views.approve_service_transaction, name="approve_service_transaction"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

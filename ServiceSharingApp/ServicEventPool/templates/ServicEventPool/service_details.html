@@ -4,6 +4,9 @@
 
 
     <h1>SERVICE DETAILS</h1>
+        {% if service.service_pic %}
+            <img class="rounded" src="{{ service.service_pic.url }}" width="150" height="150">
+        {% endif %}
         <strong>Name: </strong>{{ service }}<br>
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Location: </strong>{{ service.location }}<br>

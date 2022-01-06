@@ -14,7 +14,7 @@ docker-compose==1.25.5
 dockerpty==0.4.1
 
 psycopg2-binary==2.8.6
-
+Pillow==8.4.0
 
 PyYAML==5.4.1
 requests==2.25.1

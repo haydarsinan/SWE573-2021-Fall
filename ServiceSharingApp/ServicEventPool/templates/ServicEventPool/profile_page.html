@@ -9,7 +9,10 @@
     <strong><a>Surname: </a></strong>{{ user.last_name }}<br>
     <strong><a>Biography: </a></strong>{{ user.profile.bio }}<br>
     <strong><a>Credit: </a></strong> {{ user.profile.timeCredit }}<br>
-{#    <img src="{{ user.profile.profile_pic.url }}">#}
+    {% if user.profile.profile_pic %}
+            <img class="center rounded-circle account-img" src="{{ user.profile.profile_pic.url }}" width="80" height="80">
+    {% endif %}
+
     <h3>Services Created:</h3>
     {% for serviceCreated in servicesCreated %}
         <a href="{% url 'service_details' serviceCreated.slug %}">{{ serviceCreated.slug }}</a>
