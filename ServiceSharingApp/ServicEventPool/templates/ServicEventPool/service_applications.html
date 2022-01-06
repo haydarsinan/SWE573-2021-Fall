@@ -8,21 +8,9 @@
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Applicants:</strong><br>
         {% for applicant in applicants %}
-                    <a href = "{% url 'profile_page_others' id=applicant.profile.id %}">{{ applicant }}</a>
-{#                <form method="POST" action="">{% csrf_token %}#}
-{##}
-{#                            <div class="col-md-3">#}
-{#             <select class="form-select" data-trigger="" name="attendee" value="{{ request.GET.attendee }}">#}
-{#                    <option selected disabled>Applicants:</option>#}
-{#                    {% for applicant in applicants %}#}
-{#                      <option>{{ applicant }}</option>#}
-{#                    {% endfor %}#}
-{#             </select>#}
-{#         </div>#}
-{##}
-{#                <button class="btn btn-primary" type="submit" >Approve</button>#}
-{#                </form>#}
-            <a href="{% url 'approve_applicant_service' service.slug applicant.id  %}">Approve New </a>
+            <a href = "{% url 'profile_page_others' id=applicant.profile.id %}">{{ applicant }}</a>
+            <a href="{% url 'approve_applicant_service' service.slug applicant.id  %}">Approve</a>
+            <a href="{% url 'decline_applicant_service' service.slug applicant.id  %}">Decline</a>
 
         {% endfor %}
 

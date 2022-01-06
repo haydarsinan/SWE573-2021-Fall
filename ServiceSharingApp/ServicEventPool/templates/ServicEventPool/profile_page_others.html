@@ -10,4 +10,63 @@
     {{ profile.user.username }}
 
 
+    <h3>Services Created:</h3>
+    {% for serviceCreated in servicesCreated %}
+        <a href="{% url 'service_details' serviceCreated.slug %}">{{ serviceCreated.slug }}</a>
+    {% empty %}
+        <a>No services found.</a>
+    {% endfor %}
+
+    <h3>Services Applied:</h3>
+    {% for serviceApplied in servicesApplied %}
+        <a href="{% url 'service_details' serviceApplied.slug %}">{{ serviceApplied.slug }}</a>
+        {% empty %}
+        <a>No services found.</a>
+    {% endfor %}
+
+    <h3>Services Attending:</h3>
+    {% for serviceApproved in servicesApproved %}
+        <a href="{% url 'service_details' serviceApproved.slug %}">{{ serviceApproved.slug }}</a>
+    {% empty %}
+        <a>No services found.</a>
+    {% endfor %}
+
+    <h3>Services Declined:</h3>
+    {% for serviceDeclined in servicesDeclined %}
+        <a href="{% url 'service_details' serviceDeclined.slug %}">{{ serviceDeclined.slug }}</a>
+    {% empty %}
+        <a>No services found.</a>
+    {% endfor %}
+
+
+    <h3>Events Created:</h3>
+    {% for eventCreated in eventsCreated %}
+        <a href="{% url 'event_details' eventsCreated.slug %}">{{ eventsCreated.slug }}</a>
+    {% empty %}
+        <a>No events found.</a>
+    {% endfor %}
+
+    <h3>Events Applied:</h3>
+    {% for eventApplied in eventsApplied %}
+        <a href="{% url 'event_details' eventApplied.slug %}">{{ eventApplied.slug }}</a>
+        {% empty %}
+        <a>No events found.</a>
+    {% endfor %}
+
+    <h3>Events Attending:</h3>
+    {% for eventApproved in eventsApproved %}
+        <a href="{% url 'event_details' eventApproved.slug %}">{{ eventApproved.slug }}</a>
+    {% empty %}
+        <a>No events found.</a>
+    {% endfor %}
+
+    <h3>Events Declined:</h3>
+    {% for eventDeclined in eventsDeclined %}
+        <a href="{% url 'event_details' eventDeclined.slug %}">{{ eventDeclined.slug }}</a>
+    {% empty %}
+        <a>No events found.</a>
+    {% endfor %}
+
+
+
 {% endblock %}

@@ -4,6 +4,7 @@ from .models import Event
 from .forms import LocationForm
 from .forms import EventForm
 from .forms import ServiceForm
+from .forms import CommentForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -53,8 +54,31 @@ def profile_page(request):
 
 def profile_page_others(request, id):
     profile = get_object_or_404(Profile, pk=id)
+    user = profile.user
+    services = Service.objects.all()
+    events = Event.objects.all()
+
+    servicesCreated = services.filter(Q(service_provider=user))
+    servicesApplied = services.filter(Q(applicants__username=user))
+    servicesApproved = services.filter(Q(attendees__username=user))
+    servicesDeclined = services.filter(Q(declinedList__username=user))
+    eventsCreated = events.filter(Q(event_provider=user))
+    eventsApplied = events.filter(Q(applicants__username=user))
+    eventsApproved = events.filter(Q(attendees__username=user))
+    eventsDeclined = events.filter(Q(declinedList__username=user))
+
     return render(request, 'ServicEventPool/profile_page_others.html',
-                  {'profile': profile})
+                  {'profile': profile,
+                   'user': user,
+                   'servicesCreated': servicesCreated,
+                   'servicesApplied': servicesApplied,
+                   'servicesApproved': servicesApproved,
+                   'servicesDeclined': servicesDeclined,
+                   'eventsCreated': eventsCreated,
+                   'eventsApplied': eventsApplied,
+                   'eventsApproved': eventsApproved,
+                   'eventsDeclined': eventsDeclined
+                   })
 
 def all_services(request):
     service_list = Service.objects.all()
@@ -136,49 +160,45 @@ def event_details(request, slug):
 
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    if request.method == "POST":
-        service = get_object_or_404(Service, slug=slug)
-        user = request.user
+    return render(request, 'ServicEventPool/service_details.html',
+                  {'service': service})
+
+def request_service(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    user = request.user
+    if (user.profile.timeCredit-user.profile.blockedCredit)>=service.duration_credit:
         service.applicants.add(user)
+        currentBlockedCredit = user.profile.blockedCredit
+        user.profile.blockedCredit = currentBlockedCredit + service.duration_credit
+        user.profile.save()
         context = {
             'service': service
         }
+        messages.success(request, "You send request successfully!")
         return render(request, 'ServicEventPool/service_details.html', context)
     else:
-        return render(request, 'ServicEventPool/service_details.html',
-                      {'service': service})
+        messages.success(request, "You do not have enough credits!")
+        return HttpResponseRedirect('/service_details/'+slug)
+
+def request_back_service(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    user = request.user
+    service.applicants.remove(user)
+    currentBlockedCredit = user.profile.blockedCredit
+    user.profile.blockedCredit = currentBlockedCredit - service.duration_credit
+    user.profile.save()
+    messages.success(request, "You withdraw your request!")
+    return HttpResponseRedirect('/service_details/' + slug)
 
 def approve_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
     applicants = service.applicants.all()
     # print(applicants.get(pk=5).profile.pk)
-    attendee = request.GET.get('attendee')
-    if request.method == "POST":
-        user = attendee
-        service.attendees.add(user)
-        service.applicants.remove(user)
-        context = {
-            'service': service,
-            'applicants': applicants
-        }
-        return render(request, 'ServicEventPool/service_applications.html', context)
-    else:
-        return render(request, 'ServicEventPool/service_applications.html',
-                        {'service': service,
-                         'applicants': applicants
-                         })
+    return render(request, 'ServicEventPool/service_applications.html',
+                  {'service': service,
+                   'applicants': applicants
+                   })
 
-    # user = request.user
-    # service = get_object_or_404(Service, slug=slug)
-    # print(service.name)
-    # if service.objects.filter(applicants=user.id):
-    #     messages.success(request, "You have already requested this service!")
-    #     return redirect('service_details')
-    # else:
-    #     service.applicants.add(user)
-    #     messages.success(request, "You successfully requested for the service!")
-    #     return render(request, 'ServicEventPool/apply_service.html',
-    #                   {'service': service})
 
 
 def approve_applicant_service(request, slug, id):
@@ -210,14 +230,45 @@ def unapprove_applicant_service(request, slug, id):
 
 def decline_applicant_service(request, slug, id):
     service = get_object_or_404(Service, slug=slug)
-    applicant = service.applicant.get(id=id)
-    service.applicants.add(attendee)
-    service.attendees.remove(attendee)
+    applicant = service.applicants.get(id=id)
+    service.declinedList.add(applicant)
+    service.applicants.remove(applicant)
     applicants = service.applicants.all()
     attendees = service.attendees.all()
+    currentBlockedCredit = applicant.profile.blockedCredit
+    applicant.profile.blockedCredit = currentBlockedCredit - service.duration_credit
+    applicant.profile.save()
     context = {
         'service': service,
         'applicants': applicants,
         'attendees': attendees,
     }
     return HttpResponseRedirect('/attendees/'+slug)
+
+def approve_service_transaction(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    user = request.user
+
+    currentServiceProviderCredit = service.service_provider.profile.timeCredit
+    currentServiceTakerCredit = user.profile.timeCredit
+    currentServiceTakerBlockedCredit = user.profile.blockedCredit
+    if user in service.attendees.all():
+
+        submitted = False
+        if request.method == "POST":
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user.profile.timeCredit = currentServiceTakerCredit - service.duration_credit
+                service.service_provider.profile.timeCredit = currentServiceProviderCredit + service.duration_credit
+                user.profile.blockedCredit = currentServiceTakerBlockedCredit - service.duration_credit
+                user.profile.save()
+                service.service_provider.profile.save()
+                # messages.success("Transaction is completed!")
+                return HttpResponseRedirect('/approve_service_transaction/' + slug +'?submitted=True')
+        else:
+            form = CommentForm
+        return render(request, 'ServicEventPool/approve_service_transaction.html', {
+            'form': form,
+            'submitted': submitted,
+        })

@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from .models import Location
 from .models import Event
 from .models import Service
+from .models import Comment
 
 
 class LocationForm(ModelForm):
@@ -73,3 +74,8 @@ class ServiceForm(ModelForm):
         #     'service_provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Service Provider'}),
         #     'duration_credit': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Time Credit Requested'}),
         # }
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = "__all__"

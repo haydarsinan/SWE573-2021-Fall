@@ -17,6 +17,10 @@ class Profile(models.Model):
         MaxValueValidator(15),
         MinValueValidator(1)
     ])
+    blockedCredit = models.PositiveIntegerField(default=0, validators=[
+        MaxValueValidator(15),
+        MinValueValidator(1)
+    ])
 
     def __str__(self):
         return str(self.user)
@@ -61,3 +65,14 @@ class Service(models.Model):
     declinedList = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_declinedlist')
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    comment = models.TextField(max_length=300, blank=True, null=True)
+    RATING_CHOICES = (
+        (1, '1- Poor'),
+        (2, '2- Fair'),
+        (3, '3- Good'),
+        (4, '4- Very Good'),
+        (5, '5- Excellent')
+                      )
+    rating = models.PositiveIntegerField(choices=RATING_CHOICES)

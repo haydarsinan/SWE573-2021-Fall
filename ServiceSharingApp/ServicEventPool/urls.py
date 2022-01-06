@@ -24,9 +24,14 @@ urlpatterns = [
     path('event_details/<slug:slug>', views.event_details, name="event_details"),
     path('service_details/<slug:slug>', views.service_details, name="service_details"),
 
+    path('request_service/<slug:slug>', views.request_service, name="request_service"),
+    path('request_back_service/<slug:slug>', views.request_back_service, name="request_back_service"),
+
     path('attendees/<slug:slug>', views.approve_service, name="approve_service"),
 
     path('approve/<slug:slug>/<int:id>', views.approve_applicant_service, name="approve_applicant_service"),
     path('unapprove/<slug:slug>/<int:id>', views.unapprove_applicant_service, name="unapprove_applicant_service"),
+    path('decline/<slug:slug>/<int:id>', views.decline_applicant_service, name="decline_applicant_service"),
 
+    path('approve_service_transaction/<slug:slug>', views.approve_service_transaction, name="approve_service_transaction"),
 ]

@@ -8,6 +8,7 @@
         <strong>Description: </strong>{{ service.description }}<br>
         <strong>Location: </strong>{{ service.location }}<br>
         <strong>Service Provider: </strong>{{ service.service_provider }}<br>
+        <strong>Required Credits: </strong>{{ service.duration_credit }}<br>
         <strong>Applicants:</strong>
         {% for applicant in service.applicants.all %}
                     <li>{{ applicant }}</li>
@@ -20,11 +21,12 @@
         <br>
 
     <br>
-    <form method="POST" action="">{% csrf_token %}
-    <button class="btn btn-primary" type="submit">Request Service</button>
-    </form>
-    <br>
 
+    <a class="btn btn-primary" href="{% url 'request_service' service.slug %}">Request Service</a>
+    <a class="btn btn-primary" href="{% url 'request_back_service' service.slug %}">Take Back Your Request</a>
+
+    <br>
+    <a class="btn btn-primary" href="{% url 'approve_service_transaction' service.slug %}">Approve Transaction</a>
     <button class="btn btn-primary" onclick="goBack()">Go Back to Service List</button>
 {#    <button class="btn btn-primary" onclick="reload()">Reload</button>#}
 
