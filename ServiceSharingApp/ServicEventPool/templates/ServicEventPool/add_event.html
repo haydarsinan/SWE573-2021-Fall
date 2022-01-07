@@ -2,20 +2,35 @@
 
 {% block content %}
 
-    <h1>Add Event</h1>
     <br/><br/>
     {% if submitted %}
         Your Event is submitted successfully!
 
     {% else %}
-        <form action="" method="post">
-            {% csrf_token %}
 
-            {{ form.as_p }}
+                <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-sm-12">
+                <div class="card-body mb-3">
+                <h3 class="card-title">
+                            <a>
+                                  Add an Event
+                            </a>
+                </h3>
 
-        <input type="submit" value="Submit"
-               class="btn btn-success">
+                <form action="" method="post">
+                    {% csrf_token %}
 
-    </form>
+                    {{ form.as_p }}
+
+                <input type="submit" value="Submit"
+                       class="btn btn-success">
+
+                </form>
+
+                </div>
+              </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

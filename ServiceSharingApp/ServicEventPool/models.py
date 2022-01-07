@@ -36,13 +36,14 @@ class Location(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)
-    event_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/eventPictures/")
-    event_date = models.DateTimeField()
-    event_publish_date = models.CharField(max_length=300, blank=True, null=True)
     description = models.TextField(blank=True)
+    event_date = models.DateField()
+    event_time = models.TimeField(default='00:00')
+    location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
+    event_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/eventPictures/")
+    event_publish_date = models.CharField(max_length=300, blank=True, null=True)
     slug = AutoSlugField(populate_from='name', unique=True, default="")
     event_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_event_provider')
-    location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
     applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_applicants')
     attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_attendees')
     declinedList = models.ManyToManyField(User, default="", null=True, blank=True,
@@ -60,14 +61,15 @@ class Event(models.Model):
 
 class Service(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)
-    service_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/servicePictures/")
-    service_date = models.DateTimeField()
-    service_publish_date = models.CharField(max_length=300, blank=True, null=True)
     description = models.TextField(blank=True)
-    slug = AutoSlugField(populate_from='name', unique=True, default="")
+    service_date = models.DateField()
+    service_time = models.TimeField(default='00:00')
     duration_credit = models.PositiveIntegerField();
-    service_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_service_provider')
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
+    service_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/servicePictures/")
+    service_publish_date = models.CharField(max_length=300, blank=True, null=True)
+    slug = AutoSlugField(populate_from='name', unique=True, default="")
+    service_provider = models.ForeignKey(User, default="", on_delete=models.CASCADE, related_name='user_service_provider')
     applicants = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_applicants')
     attendees = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_attendees')
     declinedList = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_declinedlist')
@@ -95,28 +97,33 @@ class Comment(models.Model):
     rating = models.PositiveIntegerField(choices=RATING_CHOICES, default=3)
 
 
-# class Notification(models.Model):
-#     comment = models.TextField(max_length=300, blank=True, null=True)
-#     RATING_CHOICES = (
-#         (1, '1- Poor'),
-#         (2, '2- Fair'),
-#         (3, '3- Good'),
-#         (4, '4- Very Good'),
-#         (5, '5- Excellent')
-#                       )
-#     rating = models.PositiveIntegerField(choices=RATING_CHOICES)
-#
-# class Activities(models.Model):
-#     comment = models.TextField(max_length=300, blank=True, null=True)
-#     RATING_CHOICES = (
-#         (1, '1- Poor'),
-#         (2, '2- Fair'),
-#         (3, '3- Good'),
-#         (4, '4- Very Good'),
-#         (5, '5- Excellent')
-#                       )
-#     rating = models.PositiveIntegerField(choices=RATING_CHOICES)
-#
+class Notification(models.Model):
+    user = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_notification', on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, default="", null=True, blank=True, related_name='service_notification', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, default="", null=True, blank=True, related_name='event_notification', on_delete=models.CASCADE)
+    other_user = models.ForeignKey(User, default="", null=True, blank=True, related_name='other_user_notification', on_delete=models.CASCADE)
+    NOTIFICATION_CHOICES = (
+        (1, 'Applied to Your Service'),
+        (2, 'Applied to Your Event'),
+        (3, 'Your application approved to Service'),
+        (4, 'Your application approved to Event'),
+        (5, 'Transaction is completed')
+                      )
+    types_notifications = models.PositiveIntegerField(choices=NOTIFICATION_CHOICES)
+
+class Activity(models.Model):
+    user = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_activities', on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, default="", null=True, blank=True, related_name='service_activities', on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, default="", null=True, blank=True, related_name='event_activities', on_delete=models.CASCADE)
+    other_user = models.ForeignKey(User, default="", null=True, blank=True, related_name='other_user_activities', on_delete=models.CASCADE)
+    ACTIVITIES_CHOICES = (
+        (1, 'Created a Service'),
+        (2, 'Created an Event'),
+        (3, 'Attended to Service'),
+        (4, 'Attended to Event'),
+                      )
+    types_activities = models.PositiveIntegerField(choices=ACTIVITIES_CHOICES)
+
 class User_Service_Status(models.Model):
     user_serviceStatus = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_status_user')
     service_serviceStatus = models.ManyToManyField(Service, default="", null=True, blank=True, related_name='user_service_status_service')

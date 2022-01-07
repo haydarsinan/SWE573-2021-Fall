@@ -1,0 +1,41 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+<legend class="border-bottom mb-5">Notifications:
+                        {% for notification in notificationList %}
+                            <li>
+                            {% if notification.types_notifications == 1 %}
+                                <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
+                                applied to your service
+                                <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
+                                .
+                            {% elif notification.types_notifications == 2 %}
+                                <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
+                                applied to your event
+                                <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
+                                .
+                            {% elif notification.types_notifications == 3 %}
+                                Your application is approved for the service
+                                <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
+                                .
+                            {% elif notification.types_notifications == 4 %}
+                                Your application is approved for the event
+                                <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
+                                .
+                            {% elif notification.types_notifications == 5 %}
+                                <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
+                                confirmed time credit transaction for the service
+                                <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
+                                .
+                            {% endif %}
+                            </li>
+                        {% empty %}
+                        There is no notification!
+                        {% endfor %}
+                    </legend>
+
+{% endblock %}
+
+
+

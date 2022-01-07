@@ -1,0 +1,37 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+<legend class="border-bottom mb-5">News Feed:
+                        {% for activity in activityList %}
+                            <li>
+                            {% if activity.types_activities == 1 %}
+                                <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
+                                shared a new service
+                                <a href = "{% url 'service_details' slug=activity.service.slug %}">{{ activity.service.name }}</a>
+                                .
+                            {% elif activity.types_activities == 2 %}
+                                <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
+                                shared a new event
+                                <a href = "{% url 'event_details' slug=activity.event.slug %}">{{ activity.event.name }}</a>
+                                .
+                            {% elif activity.types_activities == 3 %}
+                                <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
+                                is taking the service
+                                <a href = "{% url 'service_details' slug=activity.service.slug %}">{{ activity.service.name }}</a>
+                                from
+                                <a href = "{% url 'profile_page_others' id=activity.other_user.profile.id %}">{{ activity.other_user.username }}</a>
+                                .
+                            {% elif activity.types_activities == 4 %}
+                                <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
+                                is attending the event
+                                <a href = "{% url 'event_details' slug=activity.event.slug %}">{{ activity.event.name }}</a>
+                                .
+                            {% endif %}
+                            </li>
+                        {% empty %}
+                        No news founded!
+                        {% endfor %}
+                    </legend>
+
+{% endblock %}

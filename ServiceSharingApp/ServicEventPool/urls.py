@@ -19,6 +19,9 @@ urlpatterns = [
     path('profile', views.profile_page, name="profile_page"),
     path('profile/<int:id>', views.profile_page_others, name="profile_page_others"),
 
+    path('notifications', views.notifications, name="notifications"),
+    path('newsFeed', views.newsFeed, name="newsFeed"),
+
     path('add_location', views.add_location, name="add_location"),
     path('add_event', views.add_event, name="add_event"),
     path('add_service', views.add_service, name="add_service"),
@@ -36,4 +39,4 @@ urlpatterns = [
     path('decline/<slug:slug>/<int:id>', views.decline_applicant_service, name="decline_applicant_service"),
 
     path('approve_service_transaction/<slug:slug>', views.approve_service_transaction, name="approve_service_transaction"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

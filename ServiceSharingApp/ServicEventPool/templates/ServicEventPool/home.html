@@ -2,17 +2,49 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
+
+
+    <!DOCTYPE html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>HomePage</title>
-    <h1>Welcome to ServicEvent Pool!!</h1>
-    <h2>{{ serviceName_Here }}</h2>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
 </head>
+
 <body>
-
+    <div class="article-clean">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+                    <div class="intro">
+                        <h1 class="text-center">Welcome to ServicEvent Online!!</h1>
+                        {% load static %}
+                        <p class="text-center"><span class="by">created by</span> <a href="https://github.com/haydarsinan">Haydar Sinan Yıldırım</a><span class="date"> January 8th, 2022 </span></p><img class="img-fluid rounded" src="{% static 'servıcevent.png' %}"></div>
+                    <br>
+                    <div class="text">
+                        <h2>I like Baklava with Olive Oil!</h2>
+                        <p>In Servicevent Platform, people can share their abilities or expertises by valuing time.
+                            Share any "Service" with time exchange. For example, you can get a service
+                            by a chef that can be making <b>Baklava with Olive Oil</b>.
+                            Start with time credits <b>5 hours</b>. You can get time credit with offering service.
+                            You can spend these time credit to get another services you desire.
+                        </p>
+                        <img class="img-fluid rounded" src="{% static 'eventsLogo.jpeg' %}">
+                        <h2>Create and Attend Events</h2>
+                        <p>In Servicevent Platform, people can create and share events other members. You can
+                        choose any events to join and socialize with others.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
 
+</html>
 {% endblock %}

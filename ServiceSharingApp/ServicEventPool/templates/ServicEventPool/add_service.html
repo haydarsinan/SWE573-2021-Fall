@@ -2,20 +2,37 @@
 
 {% block content %}
 
-    <h1>Add Service</h1>
     <br/><br/>
     {% if submitted %}
         Your Service is submitted successfully!
 
     {% else %}
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
 
-            {{ form.as_p }}
 
-        <input type="submit" value="Submit"
-               class="btn btn-success">
+         <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-sm-12">
+                <div class="card-body mb-3">
+                <h3 class="card-title">
+                            <a>
+                                  Add a Service
+                            </a>
+                </h3>
 
-    </form>
+                    <form action="" method="post" enctype="multipart/form-data">
+                    <div>
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                    <input type="submit" value="Submit"
+                           class="btn btn-success">
+                    </div>
+                </form>
+
+                </div>
+              </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Service
 from .models import Event
+from .models import Notification
+from .models import Activity
 from .forms import LocationForm
 from .forms import EventForm
 from .forms import ServiceForm
@@ -10,6 +12,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from .models import Profile
 from django.db.models import Q
+import datetime
 
 
 def home(request):
@@ -91,6 +94,15 @@ def all_events(request):
     return render(request, 'ServicEventPool/event_list.html',
                   {'event_list': event_list})
 
+def notifications(request):
+    notificationList = Notification.objects.filter(user=request.user)
+    return render(request, 'ServicEventPool/notifications.html',
+                  {'notificationList': notificationList})
+
+def newsFeed(request):
+    activityList = Activity.objects.filter(user=request.user)
+    return render(request, 'ServicEventPool/news_feed.html',
+                  {'activityList': activityList})
 
 def add_location(request):
     submitted = False
@@ -111,10 +123,15 @@ def add_location(request):
 
 def add_event(request):
     submitted = False
+    user = request.user
+    time = datetime.datetime.now()
     if request.method == "POST":
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.event_provider = user
+            obj.event_publish_date = time
+            obj.save()
             return HttpResponseRedirect('/add_event?submitted=True')
     else:
         form = EventForm
@@ -128,10 +145,15 @@ def add_event(request):
 
 def add_service(request):
     submitted = False
+    user = request.user
+    time = datetime.datetime.now()
     if request.method == "POST":
         form = ServiceForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.service_provider = user
+            obj.service_publish_date = time
+            obj.save()
             return HttpResponseRedirect('/add_service?submitted=True')
     else:
         form = ServiceForm
