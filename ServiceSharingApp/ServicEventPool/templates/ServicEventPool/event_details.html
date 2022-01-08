@@ -468,7 +468,7 @@ b, strong {
                 <p class="mb-0">
                         <a class="btn btn-primary" href="{% url 'attend_event' event.slug %}">Apply Event</a>
                         <a class="btn btn-primary" href="{% url 'attend_back_event' event.slug %}">Take Back Application</a>
-                    {% if service.service_provider == user %}
+                    {% if event.event_provider == user %}
                             <br><br><a class="btn btn-primary" href="{% url 'approve_event' event.slug %}">Manage Applications</a>
                             <a class="btn btn-primary" href="{% url 'complete_event' event.slug %}">Complete Event</a>
                     {% endif %}

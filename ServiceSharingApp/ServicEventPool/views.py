@@ -292,6 +292,23 @@ def decline_applicant_service(request, slug, id):
     }
     return HttpResponseRedirect('/attendees/'+slug)
 
+def decline_back_applicant_service(request, slug, id):
+    service = get_object_or_404(Service, slug=slug)
+    applicant = service.declinedList.get(id=id)
+    service.applicants.add(applicant)
+    service.declinedList.remove(applicant)
+    applicants = service.applicants.all()
+    attendees = service.attendees.all()
+    currentBlockedCredit = applicant.profile.blockedCredit
+    applicant.profile.blockedCredit = currentBlockedCredit + service.duration_credit
+    applicant.profile.save()
+    context = {
+        'service': service,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees/'+slug)
+
 def approve_service_transaction(request, slug):
     service = get_object_or_404(Service, slug=slug)
     user = request.user
@@ -385,6 +402,20 @@ def decline_applicant_event(request, slug, id):
     applicant = event.applicants.get(id=id)
     event.declinedList.add(applicant)
     event.applicants.remove(applicant)
+    applicants = event.applicants.all()
+    attendees = event.attendees.all()
+    context = {
+        'event': event,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees_event/'+slug)
+
+def decline_back_applicant_event(request, slug, id):
+    event = get_object_or_404(Event, slug=slug)
+    applicant = event.declinedList.get(id=id)
+    event.applicants.add(applicant)
+    event.declinedList.remove(applicant)
     applicants = event.applicants.all()
     attendees = event.attendees.all()
     context = {

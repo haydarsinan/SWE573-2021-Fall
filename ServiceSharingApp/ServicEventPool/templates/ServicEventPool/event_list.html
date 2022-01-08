@@ -339,6 +339,9 @@
                         <div class="widget-49-date-primary">
                             {% if event.event_pic %}
                                 <img class="center rounded-circle account-img" src="{{ event.event_pic.url }}" width="60" height="60">
+                            {% else %}
+                            {% load static %}
+                                <img class="center rounded-circle account-img" src="{% static 'servıcevent.png' %}" width="60" height="60">
                             {% endif %}
                         </div>
                         <div class="widget-49-meeting-info">

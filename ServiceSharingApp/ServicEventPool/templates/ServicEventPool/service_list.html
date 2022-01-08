@@ -339,6 +339,9 @@
                         <div class="widget-49-date-primary">
                             {% if service.service_pic %}
                                 <img class="center rounded-circle account-img" src="{{ service.service_pic.url }}" width="60" height="60">
+                            {% else %}
+                            {% load static %}
+                                <img class="center rounded-circle account-img" src="{% static 'servıcevent.png' %}" width="60" height="60">
                             {% endif %}
                         </div>
                         <div class="widget-49-meeting-info">
