@@ -2,71 +2,229 @@
 
 {% block content %}
 
+    <style>
 
-    <h1>Profile Page</h1>
+    body{
+    margin-top:0px;
+    color: #1a202c;
+    text-align: left;
+    background-color: #e2e8f0;
+}
+.main-body {
+    padding: 15px;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
 
-    {{ profile.user.first_name }}
-    {{ profile.user.last_name }}
-    {{ profile.user.username }}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
 
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
 
-    <h3>Services Created:</h3>
-    {% for serviceCreated in servicesCreated %}
-        <a href="{% url 'service_details' serviceCreated.slug %}">{{ serviceCreated.slug }}</a>
-    {% empty %}
-        <a>No services found.</a>
-    {% endfor %}
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
 
-    <h3>Services Applied:</h3>
-    {% for serviceApplied in servicesApplied %}
-        <a href="{% url 'service_details' serviceApplied.slug %}">{{ serviceApplied.slug }}</a>
-        {% empty %}
-        <a>No services found.</a>
-    {% endfor %}
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
 
-    <h3>Services Attending:</h3>
-    {% for serviceApproved in servicesApproved %}
-        <a href="{% url 'service_details' serviceApproved.slug %}">{{ serviceApproved.slug }}</a>
-    {% empty %}
-        <a>No services found.</a>
-    {% endfor %}
-
-    <h3>Services Declined:</h3>
-    {% for serviceDeclined in servicesDeclined %}
-        <a href="{% url 'service_details' serviceDeclined.slug %}">{{ serviceDeclined.slug }}</a>
-    {% empty %}
-        <a>No services found.</a>
-    {% endfor %}
-
-
-    <h3>Events Created:</h3>
-    {% for eventCreated in eventsCreated %}
-        <a href="{% url 'event_details' eventCreated.slug %}">{{ eventCreated.slug }}</a>
-    {% empty %}
-        <a>No events found.</a>
-    {% endfor %}
-
-    <h3>Events Applied:</h3>
-    {% for eventApplied in eventsApplied %}
-        <a href="{% url 'event_details' eventApplied.slug %}">{{ eventApplied.slug }}</a>
-        {% empty %}
-        <a>No events found.</a>
-    {% endfor %}
-
-    <h3>Events Attending:</h3>
-    {% for eventApproved in eventsApproved %}
-        <a href="{% url 'event_details' eventApproved.slug %}">{{ eventApproved.slug }}</a>
-    {% empty %}
-        <a>No events found.</a>
-    {% endfor %}
-
-    <h3>Events Declined:</h3>
-    {% for eventDeclined in eventsDeclined %}
-        <a href="{% url 'event_details' eventDeclined.slug %}">{{ eventDeclined.slug }}</a>
-    {% empty %}
-        <a>No events found.</a>
-    {% endfor %}
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
 
 
+    </style>
+
+    <div class="container">
+    <div class="main-body">
+
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                      {% if profile.profile_pic %}
+                        <img class="center rounded-circle account-img" src="{{ profile.profile_pic.url }}" width="150" height="150">
+                      {% endif %}
+                    <div class="mt-3">
+                      <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                        <p class="text-secondary mb-1"><b>Username: </b>{{ user.username }}</p>
+                        <p class="text-secondary mb-1"><b>Email: </b>{{ user.email }}</p>
+                        <p class="text-muted font-size-sm"><b>Date Joined: </b>{{ user.date_joined.date }}</p>
+                      <button class="btn btn-primary">Follow</button>
+                      <button class="btn btn-outline-primary">Message</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                    <h5>Comments: </h5>
+                    {% for comment in comments %}
+                    <li>
+
+                    </li>
+                        {% empty %}
+                        There is no comment yet.
+                    {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Full Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ user.first_name }} {{ user.last_name }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Biography </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ profile.bio }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Time Credit </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ profile.timeCredit }} hour(s)
+                    </div>
+                  </div>
+
+                                        <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Services Offered/Taken </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ numberOfServicesCreated }}/ {{ numberOfServicesApproved }}
+                    </div>
+                  </div>
+                    <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Events Created/Attended </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ numberOfEventsCreated }}/ {{ numberOfEventsApproved }}
+                    </div>
+                  </div>
+                    <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Number of Services </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        Offered: {{ numberOfServicesCreated }} <br> Taken: {{ numberOfServicesApproved }}
+                    </div>
+                  </div>
+                    <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Number of Events  </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        Created: {{ numberOfEventsCreated }}  <br> Attended: {{ numberOfEventsApproved }}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row gutters-sm">
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3">Services Offered: </h6><hr>
+                        {% for serviceCreated in servicesCreated %}
+                            <a href="{% url 'service_details' serviceCreated.slug %}">{{ serviceCreated.name }}</a><hr>
+                        {% empty %}
+                            <a>No services found.</a>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3">Services Taken: </h6><hr>
+                            {% for serviceApproved in servicesApproved %}
+                                <a href="{% url 'service_details' serviceApproved.slug %}">{{ serviceApproved.name }}</a>
+                            {% empty %}
+                                <a>No services found.</a>
+                            {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="d-flex align-items-center mb-3">Events Created: </h6><hr>
+                        {% for eventCreated in eventsCreated %}
+                            <a href="{% url 'event_details' eventCreated.slug %}">{{ eventCreated.name }}</a>
+                        {% empty %}
+                            <a>No events found.</a>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                        <h6 class="d-flex align-items-center mb-3">Events Attending: </h6><hr>
+                            {% for eventApproved in eventsApproved %}
+                                <a href="{% url 'event_details' eventApproved.slug %}">{{ eventApproved.name }}</a>
+                            {% empty %}
+                                <a>No events found.</a>
+                            {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+    </div>
 
 {% endblock %}

@@ -36,12 +36,16 @@ def profile_page(request):
     services = Service.objects.all()
     events = Event.objects.all()
     servicesCreated = services.filter(Q(service_provider=user))
+    numberOfServicesCreated = servicesCreated.__len__()
     servicesApplied = services.filter(Q(applicants__username=user))
     servicesApproved = services.filter(Q(attendees__username=user))
+    numberOfServicesApproved = servicesApproved.__len__()
     servicesDeclined = services.filter(Q(declinedList__username=user))
     eventsCreated = events.filter(Q(event_provider=user))
+    numberOfEventsCreated = eventsCreated.__len__()
     eventsApplied = events.filter(Q(applicants__username=user))
     eventsApproved = events.filter(Q(attendees__username=user))
+    numberOfEventsApproved = eventsApproved.__len__()
     eventsDeclined = events.filter(Q(declinedList__username=user))
     return render(request, 'ServicEventPool/profile_page.html',
                   {'user': user,
@@ -52,7 +56,11 @@ def profile_page(request):
                    'eventsCreated': eventsCreated,
                    'eventsApplied': eventsApplied,
                    'eventsApproved': eventsApproved,
-                   'eventsDeclined': eventsDeclined
+                   'eventsDeclined': eventsDeclined,
+                   'numberOfServicesCreated': numberOfServicesCreated,
+                   'numberOfServicesApproved': numberOfServicesApproved,
+                   'numberOfEventsCreated': numberOfEventsCreated,
+                   'numberOfEventsApproved': numberOfEventsApproved
                    })
 
 def profile_page_others(request, id):
@@ -62,12 +70,16 @@ def profile_page_others(request, id):
     events = Event.objects.all()
 
     servicesCreated = services.filter(Q(service_provider=user))
+    numberOfServicesCreated = servicesCreated.__len__()
     servicesApplied = services.filter(Q(applicants__username=user))
     servicesApproved = services.filter(Q(attendees__username=user))
+    numberOfServicesApproved = servicesApproved.__len__()
     servicesDeclined = services.filter(Q(declinedList__username=user))
     eventsCreated = events.filter(Q(event_provider=user))
+    numberOfEventsCreated = eventsCreated.__len__()
     eventsApplied = events.filter(Q(applicants__username=user))
     eventsApproved = events.filter(Q(attendees__username=user))
+    numberOfEventsApproved = eventsApproved.__len__()
     eventsDeclined = events.filter(Q(declinedList__username=user))
 
     return render(request, 'ServicEventPool/profile_page_others.html',
@@ -80,7 +92,11 @@ def profile_page_others(request, id):
                    'eventsCreated': eventsCreated,
                    'eventsApplied': eventsApplied,
                    'eventsApproved': eventsApproved,
-                   'eventsDeclined': eventsDeclined
+                   'eventsDeclined': eventsDeclined,
+                   'numberOfServicesCreated': numberOfServicesCreated,
+                   'numberOfServicesApproved': numberOfServicesApproved,
+                   'numberOfEventsCreated': numberOfEventsCreated,
+                   'numberOfEventsApproved': numberOfEventsApproved
                    })
 
 def all_services(request):
