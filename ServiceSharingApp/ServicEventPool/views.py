@@ -132,6 +132,8 @@ def add_event(request):
             obj.event_provider = user
             obj.event_publish_date = time
             obj.save()
+            newActivity = Activity.objects.create(user=user, event=obj, types_activities=2)
+            newActivity.save()
             return HttpResponseRedirect('/add_event?submitted=True')
     else:
         form = EventForm
@@ -154,6 +156,8 @@ def add_service(request):
             obj.service_provider = user
             obj.service_publish_date = time
             obj.save()
+            newActivity = Activity.objects.create(user=user, service=obj, types_activities=1)
+            newActivity.save()
             return HttpResponseRedirect('/add_service?submitted=True')
     else:
         form = ServiceForm
@@ -172,7 +176,8 @@ def event_details(request, slug):
         user = request.user
         event.applicants.add(user)
         context = {
-            'event': event
+            'event': event,
+            'user': user
         }
         return render(request, 'ServicEventPool/event_details.html', context)
     else:
@@ -182,8 +187,10 @@ def event_details(request, slug):
 
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
+    user = request.user
     return render(request, 'ServicEventPool/service_details.html',
-                  {'service': service})
+                  {'service': service,
+                   'user': user})
 
 def request_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
@@ -229,6 +236,8 @@ def approve_applicant_service(request, slug, id):
     service.attendees.add(applicant)
     service.applicants.remove(applicant)
     applicants = service.applicants.all()
+    newActivity = Activity.objects.create(user=applicant, other_user=request.user, service=service, types_activities=3)
+    newActivity.save()
     context = {
         'service': service,
         'applicants': applicants
@@ -294,3 +303,84 @@ def approve_service_transaction(request, slug):
             'form': form,
             'submitted': submitted,
         })
+
+
+
+def attend_event(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    user = request.user
+    event.applicants.add(user)
+
+    context = {
+        'event': event
+    }
+    messages.success(request, "You send your application successfully!")
+    return render(request, 'ServicEventPool/event_details.html', context)
+
+
+def attend_back_event(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    user = request.user
+    event.applicants.remove(user)
+    messages.success(request, "You withdraw your application!")
+    return HttpResponseRedirect('/event_details/' + slug)
+
+def approve_event(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    applicants = event.applicants.all()
+    return render(request, 'ServicEventPool/event_applications.html',
+                  {'event': event,
+                   'applicants': applicants
+                   })
+
+
+
+def approve_applicant_event(request, slug, id):
+    event = get_object_or_404(Event, slug=slug)
+    applicant = event.applicants.get(id=id)
+    event.attendees.add(applicant)
+    event.applicants.remove(applicant)
+    applicants = event.applicants.all()
+    newActivity = Activity.objects.create(user=applicant, other_user=request.user, event=event, types_activities=4)
+    newActivity.save()
+    context = {
+        'event': event,
+        'applicants': applicants
+    }
+    return HttpResponseRedirect('/attendees_event/'+slug)
+
+def unapprove_applicant_event(request, slug, id):
+    event = get_object_or_404(Event, slug=slug)
+    attendee = event.attendees.get(id=id)
+    event.applicants.add(attendee)
+    event.attendees.remove(attendee)
+    applicants = event.applicants.all()
+    attendees = event.attendees.all()
+    context = {
+        'event': event,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees_event/'+slug)
+
+
+def decline_applicant_event(request, slug, id):
+    event = get_object_or_404(Event, slug=slug)
+    applicant = event.applicants.get(id=id)
+    event.declinedList.add(applicant)
+    event.applicants.remove(applicant)
+    applicants = event.applicants.all()
+    attendees = event.attendees.all()
+    context = {
+        'event': event,
+        'applicants': applicants,
+        'attendees': attendees,
+    }
+    return HttpResponseRedirect('/attendees_event/'+slug)
+
+def complete_event(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    user = request.user
+    event.event_status = 3
+    event.save()
+    return HttpResponseRedirect('/attendees_event/'+slug)

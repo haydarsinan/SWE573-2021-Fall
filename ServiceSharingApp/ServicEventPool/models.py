@@ -39,6 +39,7 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     event_date = models.DateField()
     event_time = models.TimeField(default='00:00')
+    duration = models.PositiveIntegerField();
     location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
     event_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/eventPictures/")
     event_publish_date = models.CharField(max_length=300, blank=True, null=True)
@@ -107,7 +108,9 @@ class Notification(models.Model):
         (2, 'Applied to Your Event'),
         (3, 'Your application approved to Service'),
         (4, 'Your application approved to Event'),
-        (5, 'Transaction is completed')
+        (5, 'Transaction is completed'),
+        (6, 'Your application declined to Service'),
+        (7, 'Your application declined to Event')
                       )
     types_notifications = models.PositiveIntegerField(choices=NOTIFICATION_CHOICES)
 

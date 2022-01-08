@@ -274,7 +274,7 @@
 
     <h3>Events Created:</h3>
     {% for eventCreated in eventsCreated %}
-        <a href="{% url 'event_details' eventsCreated.slug %}">{{ eventsCreated.slug }}</a>
+        <a href="{% url 'event_details' eventCreated.slug %}">{{ eventCreated.slug }}</a>
     {% empty %}
         <a>No events found.</a>
     {% endfor %}

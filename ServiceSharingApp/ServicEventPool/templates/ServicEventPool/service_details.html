@@ -419,85 +419,72 @@ b, strong {
     <div class="row">
         <div class="col-md-5">
             <div class="project-info-box mt-0">
-                <h5>PROJECT DETAILS</h5>
-                <p class="mb-0">Vivamus pellentesque, felis in aliquam ullamcorper, lorem tortor porttitor erat, hendrerit porta nunc tellus eu lectus. Ut vel imperdiet est. Pellentesque condimentum, dui et blandit laoreet, quam nisi tincidunt tortor.</p>
-            </div><!-- / project-info-box -->
+                <h3>{{ service.name }}</h3>
+                <p class="mb-0">{{ service.description }}</p>
+            </div>
 
             <div class="project-info-box">
-                <p><b>Client:</b> CUPCAKE CO</p>
-                <p><b>Date:</b> 14.02.2020</p>
-                <p><b>Designer:</b> James Doe</p>
-                <p><b>Tools:</b> Illustrator</p>
-                <p class="mb-0"><b>Budget:</b> $500</p>
-            </div><!-- / project-info-box -->
-
+                <p><b>Location: </b> {{ service.location }}</p>
+                <p><b>Date: </b>{{ service.service_date }}, {{ service.service_time }}</p>
+                <p><b>Duration (Credit): </b> {{ service.duration_credit }} hour(s)</p>
+                <p><b>Service Provider: </b> <a href="{% url 'profile_page_others' service.service_provider.profile.id %}">{{ service.service_provider }}</a></p>
+                <p><b>Publish Date: </b> {{ service.service_publish_date }}</p>
+                <p><b>Service Status: </b>
+                {% if  service.service_status == 1 %}
+                    <a style="color: green"> <b>Open to Application</b> </a>
+                {% elif service.service_status == 2 %}
+                    <a style="color: red"> <b>Closed for Application</b> </a>
+                {% elif service.service_status == 3 %}
+                    <a style="color: blue"> <b>Completed</b> </a>
+                {% endif %}</p>
+            </div>
             <div class="project-info-box mt-0 mb-0">
                 <p class="mb-0">
-                    <span class="fw-bold mr-10 va-middle hide-mobile">Share:</span>
-                    <a href="#x" class="btn btn-xs btn-facebook btn-circle btn-icon mr-5 mb-0"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#x" class="btn btn-xs btn-twitter btn-circle btn-icon mr-5 mb-0"><i class="fab fa-twitter"></i></a>
-                    <a href="#x" class="btn btn-xs btn-pinterest btn-circle btn-icon mr-5 mb-0"><i class="fab fa-pinterest"></i></a>
-                    <a href="#x" class="btn btn-xs btn-linkedin btn-circle btn-icon mr-5 mb-0"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-primary" href="{% url 'service_list' %}">Back to Services</a>
                 </p>
             </div><!-- / project-info-box -->
         </div><!-- / column -->
 
         <div class="col-md-7">
-            <img src="https://via.placeholder.com/400x300/FFB6C1/000000" alt="project-image" class="rounded">
+            {% if service.service_pic %}
+                <img class="rounded" src="{{ service.service_pic.url }}">
+            {% else %}
+                {% load static %}
+                <img class="rounded" src="{% static 'servıcevent.png' %}">
+            {% endif %}
+
             <div class="project-info-box">
-                <p><b>Categories:</b> Design, Illustration</p>
-                <p><b>Skills:</b> Illustrator</p>
+                <span class="fw-bold mr-10 va-middle hide-mobile"><b>Applicants:</b></span>
+                        {% for applicant in service.applicants.all %}
+                            <a href="{% url 'profile_page_others' applicant.profile.id %}">{{ applicant.username }}, </a>
+                        {% endfor %}
+                <br><br>
+                <span class="fw-bold mr-10 va-middle hide-mobile"><b>Attendees:</b></span>
+                        {% for attendee in service.attendees.all %}
+                            <a href="{% url 'profile_page_others' attendee.profile.id %}">{{ attendee.username }}, </a>
+                        {% endfor %}
+            </div>
+            <div class="project-info-box mt-0 mb-0">
+                <p class="mb-0">
+                        <a class="btn btn-primary" href="{% url 'request_service' service.slug %}">Request Service</a>
+                        <a class="btn btn-primary" href="{% url 'request_back_service' service.slug %}">Take Back Your Request</a>
+                    {% if service.service_provider == user %}
+                            <br><br><a class="btn btn-primary" href="{% url 'approve_service' service.slug %}">Manage Applications</a>
+                    {% endif %}
+
+                {% if user in service.attendees.all %}
+                        <a class="btn btn-primary" href="{% url 'approve_service_transaction' service.slug %}">Approve Transaction</a>
+                {% endif %}
+                </p>
             </div><!-- / project-info-box -->
-        </div><!-- / column -->
+        </div>
     </div>
 </div>
 
 
 
 
-    <h1>SERVICE DETAILS</h1>
-        {% if service.service_pic %}
-            <img class="rounded" src="{{ service.service_pic.url }}" width="150" height="150">
-        {% endif %}
-        <strong>Name: </strong>{{ service }}<br>
-        <strong>Description: </strong>{{ service.description }}<br>
-        <strong>Location: </strong>{{ service.location }}<br>
-        <strong>Service Provider: </strong>{{ service.service_provider }}<br>
-        <strong>Required Credits: </strong>{{ service.duration_credit }}<br>
-        <strong>Applicants:</strong>
-        {% for applicant in service.applicants.all %}
-                    <li>{{ applicant }}</li>
-        {% endfor %}
-        <a href = "{% url 'approve_service' slug=service.slug %}"> Go to Request List </a><br>
-        <strong>Attendees:</strong>
-        {% for attendee in service.attendees.all %}
-                    <li>{{ attendee }}</li>
-        {% endfor %}
-        <br>
-
     <br>
 
-    <a class="btn btn-primary" href="{% url 'request_service' service.slug %}">Request Service</a>
-    <a class="btn btn-primary" href="{% url 'request_back_service' service.slug %}">Take Back Your Request</a>
-
-    <br>
-    <a class="btn btn-primary" href="{% url 'approve_service_transaction' service.slug %}">Approve Transaction</a>
-    <button class="btn btn-primary" onclick="goBack()">Go Back to Service List</button>
-{#    <button class="btn btn-primary" onclick="reload()">Reload</button>#}
-
-    <script>
-function goBack() {
-  window.history.back();
-}
-function reload() {
-  location.reload();
-}
-</script>
-
-{#    <a target="_blank"#}
-{#    class="btn btn-info pull-right"#}
-{#    href="{% url 'apply_service' service.slug %}">#}
-{#    Request#}
-{#</a>#}
 
 {% endblock %}

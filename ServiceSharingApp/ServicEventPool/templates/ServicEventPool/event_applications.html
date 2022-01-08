@@ -1,0 +1,47 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+
+    <h1>Application Managements</h1>
+        <strong>Name: </strong>{{  }}<br>
+        <strong>Description: </strong>{{ service.description }}<br>
+        <strong>Applicants:</strong><br>
+        {% for applicant in applicants %}
+            <a href = "{% url 'profile_page_others' id=applicant.profile.id %}">{{ applicant }}</a>
+            <a href="{% url 'approve_applicant_service' service.slug applicant.id  %}">Approve</a>
+            <a href="{% url 'decline_applicant_service' service.slug applicant.id  %}">Decline</a>
+
+        {% endfor %}
+
+
+
+        <br>
+        <strong>Attendees:</strong>
+        {% for attendee in service.attendees.all %}
+            <a href = "{% url 'profile_page_others' id=attendee.profile.id %}">{{ attendee }}</a>
+            <a href="{% url 'unapprove_applicant_service' service.slug attendee.id  %}">UnApprove</a>
+        {% endfor %}
+        <br>
+
+    <br>
+    <br>
+    <button class="btn btn-primary" onclick="goBack()">Go Back to Service Page</button>
+{#    <button class="btn btn-primary" onclick="reload()">Reload</button>#}
+
+    <script>
+function goBack() {
+  window.history.back();
+}
+function reload() {
+  location.reload();
+}
+</script>
+
+{#    <a target="_blank"#}
+{#    class="btn btn-info pull-right"#}
+{#    href="{% url 'apply_service' service.slug %}">#}
+{#    Request#}
+{#</a>#}
+
+{% endblock %}

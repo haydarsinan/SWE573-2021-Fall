@@ -28,6 +28,14 @@
                                 confirmed time credit transaction for the service
                                 <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
                                 .
+                            {% elif notification.types_notifications == 6 %}
+                                Your application is declined for the service
+                                <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
+                                .
+                            {% elif notification.types_notifications == 7 %}
+                                Your application is declined for the event
+                                <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
+                                .
                             {% endif %}
                             </li>
                         {% empty %}

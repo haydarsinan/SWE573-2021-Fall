@@ -32,11 +32,20 @@ urlpatterns = [
     path('request_service/<slug:slug>', views.request_service, name="request_service"),
     path('request_back_service/<slug:slug>', views.request_back_service, name="request_back_service"),
 
+    path('attend_event/<slug:slug>', views.attend_event, name="attend_event"),
+    path('attend_back_event/<slug:slug>', views.attend_back_event, name="attend_back_event"),
+
     path('attendees/<slug:slug>', views.approve_service, name="approve_service"),
+    path('attendees_event/<slug:slug>', views.approve_event, name="approve_event"),
 
     path('approve/<slug:slug>/<int:id>', views.approve_applicant_service, name="approve_applicant_service"),
     path('unapprove/<slug:slug>/<int:id>', views.unapprove_applicant_service, name="unapprove_applicant_service"),
     path('decline/<slug:slug>/<int:id>', views.decline_applicant_service, name="decline_applicant_service"),
 
+    path('approve_event/<slug:slug>/<int:id>', views.approve_applicant_event,name="approve_applicant_event"),
+    path('unapprove_event/<slug:slug>/<int:id>', views.unapprove_applicant_event,name="unapprove_applicant_event"),
+    path('decline_event/<slug:slug>/<int:id>', views.decline_applicant_event,name="decline_applicant_event"),
+
     path('approve_service_transaction/<slug:slug>', views.approve_service_transaction, name="approve_service_transaction"),
+    path('complete_event/<slug:slug>', views.complete_event, name="complete_event"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

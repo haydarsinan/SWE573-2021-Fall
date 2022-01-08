@@ -294,9 +294,11 @@
 }
 
 .widget-49 .widget-49-meeting-points {
+    text-align: left;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 12px;
   margin-top: .5rem;
+    color: #727686;
 }
 
 .widget-49 .widget-49-meeting-points .widget-49-meeting-item {
@@ -317,36 +319,50 @@
 }
 
     </style>
-
-
-    <h1 style="text-align: center">Welcome to SERVICE LIST PAGE</h1><br>
+<br>
+    <h2 style="text-align: center">List of Services:</h2><br>
     <div class="container">
 <div class="row">
-        {% for service in service_list %}
+    {% for service in service_list %}
     <div class="col-lg-4">
         <div class="card card-margin">
             <div class="card-header no-border">
-                <h5 class="card-title">MOM</h5>
+                <h5 class="card-title">
+                            <a href = "{% url 'service_details' slug=service.slug %}">
+                                  {{ service.name }}
+                            </a>
+                </h5>
             </div>
             <div class="card-body pt-0">
                 <div class="widget-49">
                     <div class="widget-49-title-wrapper">
                         <div class="widget-49-date-primary">
-                            <span class="widget-49-date-day">09</span>
-                            <span class="widget-49-date-month">apr</span>
+                            {% if service.service_pic %}
+                                <img class="center rounded-circle account-img" src="{{ service.service_pic.url }}" width="60" height="60">
+                            {% endif %}
                         </div>
                         <div class="widget-49-meeting-info">
-                            <span class="widget-49-pro-title">PRO-08235 DeskOpe. Website</span>
-                            <span class="widget-49-meeting-time">12:00 to 13.30 Hrs</span>
+                            <a style="font-size: smaller"><strong>When: </strong>{{ service.service_date }}</a>
+                            <a style="font-size: smaller"><strong>Where: </strong>{{ service.location }}</a>
+                            <a style="font-size: smaller"><strong>Duration: </strong>{{ service.duration_credit }} hour(s)</a>
+
                         </div>
                     </div>
-                    <ol class="widget-49-meeting-points">
-                        <li class="widget-49-meeting-item"><span>Expand module is removed</span></li>
-                        <li class="widget-49-meeting-item"><span>Data migration is in scope</span></li>
-                        <li class="widget-49-meeting-item"><span>Session timeout increase to 30 minutes</span></li>
-                    </ol>
+                    <br>
+                    <div class="widget-49-meeting-points">
+                        <span style="
+                          display: block;
+                          width: 225px;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                        ">
+                                                    {{ service.description }}
+                        </span>
+
+                    </div><br>
                     <div class="widget-49-meeting-action">
-                        <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
+                        <a href="{% url 'service_details' slug=service.slug %}" class="btn btn-sm btn-flash-border-primary">View Details</a>
                     </div>
                 </div>
             </div>
@@ -355,43 +371,5 @@
         {% endfor %}
 </div>
 </div>
-
-
-
-
-    <h1>Welcome to SERVICE LIST PAGE</h1>
-    {% for service in service_list %}
-
-        <div class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-12">
-                <div class="card-body mb-3">
-                <h5 class="card-title">
-                            <a href = "{% url 'service_details' slug=service.slug %}">
-                                  {{ service.name }}
-                            </a>
-                </h5>
-
-                            {% if service.service_pic %}
-                                <img class="rounded" src="{{ service.service_pic.url }}" width="150" height="150">
-                            {% endif %}
-                            <strong>Name: </strong>{{ service }}<br>
-                            <strong>Description: </strong>{{ service.description }}<br>
-                            <strong>Duration: </strong>{{ service.duration_credit }}<br>
-                            <strong>Location: </strong>{{ service.location }}<br>
-                            <strong>Service Provider: </strong>{{ service.service_provider }}<br>
-                            <strong>Attendees:</strong>
-                            {% for attendee in service.attendees.all %}
-                                        <li>{{ attendee }}</li>
-                            {% endfor %}
-                            <br>
-
-
-                </div>
-              </div>
-            </div>
-        </div>
-    {% endfor %}
-
 
 {% endblock %}
