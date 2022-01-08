@@ -320,8 +320,18 @@
 
     </style>
 <br>
-    <h2 style="text-align: center">List of Events:</h2><br>
+
+
     <div class="container">
+
+        <form action= "{% url 'eventSearch' %}" class="row g-3">
+        <div class="col-md-6">
+              <input class="form-control me-2" name = "eventSearch" type="search" placeholder="Search" aria-label="eventSearch" value="{{ request.GET.eventSearch }}">
+        </div>
+             <button class="btn btn-success" type="submit" name="Search">Search</button><br><br>
+        </form>
+
+        <br><h2 style="text-align: center">List of Events:</h2><br>
 <div class="row">
     {% for event in event_list %}
     <div class="col-lg-4">

@@ -320,8 +320,17 @@
 
     </style>
 <br>
-    <h2 style="text-align: center">List of Services:</h2><br>
+
+
     <div class="container">
+        <form action= "{% url 'serviceSearch' %}" class="row g-3">
+        <div class="col-md-6">
+              <input class="form-control me-2" name = "serviceSearch" type="search" placeholder="Search" aria-label="serviceSearch" value="{{ request.GET.serviceSearch }}">
+        </div>
+             <button class="btn btn-success" type="submit" value="Search" name="Search">Search</button><br><br>
+        </form>
+        <br>
+        <h2 style="text-align: center">List of Services:</h2><br>
 <div class="row">
     {% for service in service_list %}
     <div class="col-lg-4">

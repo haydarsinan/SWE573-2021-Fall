@@ -101,12 +101,36 @@ def profile_page_others(request, id):
 
 def all_services(request):
     service_list = Service.objects.all()
+    service_list = Service.objects.order_by('-id')
     return render(request, 'ServicEventPool/service_list.html',
                   {'service_list': service_list})
 
 
 def all_events(request):
     event_list = Event.objects.all()
+    event_list = Event.objects.order_by('-id')
+    return render(request, 'ServicEventPool/event_list.html',
+                  {'event_list': event_list})
+
+def serviceSearch(request):
+    service_list = Service.objects.all()
+    searchText = request.GET.get('serviceSearch')
+    service_list = Service.objects.order_by('-id')
+    if searchText:
+        service_list =  service_list.filter(Q(name__icontains=searchText) |
+                                            Q(description__icontains=searchText))
+
+    return render(request, 'ServicEventPool/service_list.html',
+                  {'service_list': service_list})
+
+def eventSearch(request):
+    event_list = Event.objects.all()
+    searchText = request.GET.get('eventSearch')
+    print(searchText)
+    event_list = Event.objects.order_by('-id')
+    if searchText:
+        event_list =  event_list.filter(Q(name__icontains=searchText) |
+                                            Q(description__icontains=searchText))
     return render(request, 'ServicEventPool/event_list.html',
                   {'event_list': event_list})
 
