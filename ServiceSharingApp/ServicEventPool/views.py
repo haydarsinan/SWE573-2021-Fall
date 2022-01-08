@@ -455,3 +455,13 @@ def complete_event(request, slug):
     event.event_status = 3
     event.save()
     return HttpResponseRedirect('/attendees_event/'+slug)
+
+def delete_service(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    service.delete()
+    return HttpResponseRedirect('/services')
+
+def delete_event(request, slug):
+    event = get_object_or_404(Event, slug=slug)
+    event.delete()
+    return HttpResponseRedirect('/events')

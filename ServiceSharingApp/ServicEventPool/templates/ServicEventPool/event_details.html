@@ -471,6 +471,7 @@ b, strong {
                     {% if event.event_provider == user %}
                             <br><br><a class="btn btn-primary" href="{% url 'approve_event' event.slug %}">Manage Applications</a>
                             <a class="btn btn-primary" href="{% url 'complete_event' event.slug %}">Complete Event</a>
+                            <a class="btn btn-danger" href="{% url 'delete_event' event.slug %}">Delete Event</a>
                     {% endif %}
                 </p>
             </div><!-- / project-info-box -->
