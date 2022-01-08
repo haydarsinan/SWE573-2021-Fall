@@ -19,6 +19,8 @@ urlpatterns = [
     path('profile', views.profile_page, name="profile_page"),
     path('profile/<int:id>', views.profile_page_others, name="profile_page_others"),
 
+    path('mediaUpload', views.mediaUpload, name="mediaUpload"),
+
     path('eventSearch', views.eventSearch, name="eventSearch"),
     path('serviceSearch', views.serviceSearch, name="serviceSearch"),
 

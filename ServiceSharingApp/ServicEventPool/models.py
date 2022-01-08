@@ -33,6 +33,13 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
+class Media(models.Model):
+        name = models.CharField(max_length=300, blank=True, null=True)
+        media_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/systemPictures/")
+
+        def __str__(self):
+            return self.name
+
 
 class Event(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)

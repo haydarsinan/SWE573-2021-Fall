@@ -4,6 +4,7 @@ from .models import Location
 from .models import Event
 from .models import Service
 from .models import Comment
+from .models import Media
 
 
 class LocationForm(ModelForm):
@@ -88,4 +89,9 @@ class ServiceForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
+        fields = "__all__"
+
+class MediaForm(ModelForm):
+    class Meta:
+        model = Media
         fields = "__all__"

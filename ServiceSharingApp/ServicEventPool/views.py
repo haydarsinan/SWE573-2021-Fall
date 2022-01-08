@@ -3,10 +3,12 @@ from .models import Service
 from .models import Event
 from .models import Notification
 from .models import Activity
+from .models import Media
 from .forms import LocationForm
 from .forms import EventForm
 from .forms import ServiceForm
 from .forms import CommentForm
+from .forms import MediaForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -17,10 +19,34 @@ import datetime
 
 def home(request):
     serviceName = "I like Baklava with Olive Oil :)"
+    medias = Media.objects.all()
+    if medias.get(pk=1):
+        media1 = medias.get(pk=1)
+    if medias.get(pk=2):
+        media2 = medias.get(pk=2)
     return render(request, 'ServicEventPool/home.html', {
-        "serviceName_Here": serviceName
+        "serviceName_Here": serviceName,
+        "medias": medias,
+        "media1": media1,
+        "media2": media2
     })
 
+def mediaUpload(request):
+    submitted = False
+    if request.method == "POST":
+        form = MediaForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return HttpResponseRedirect('/mediaUpload?submitted=True')
+    else:
+        form = MediaForm
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request, 'ServicEventPool/media.html', {
+        'form': form,
+        'submitted': submitted,
+    })
 
 def calendar(request, year, month):
     year = year
