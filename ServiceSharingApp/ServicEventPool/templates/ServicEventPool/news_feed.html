@@ -9,24 +9,24 @@
                                 <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
                                 shared a new service
                                 <a href = "{% url 'service_details' slug=activity.service.slug %}">{{ activity.service.name }}</a>
-                                .
+                                at {{ activity.activity_datetime.date }} {{ activity.activity_datetime.time }}
                             {% elif activity.types_activities == 2 %}
                                 <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
                                 shared a new event
                                 <a href = "{% url 'event_details' slug=activity.event.slug %}">{{ activity.event.name }}</a>
-                                .
+                                at {{ activity.activity_datetime.date }} {{ activity.activity_datetime.time }}
                             {% elif activity.types_activities == 3 %}
                                 <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
                                 is taking the service
                                 <a href = "{% url 'service_details' slug=activity.service.slug %}">{{ activity.service.name }}</a>
                                 from
                                 <a href = "{% url 'profile_page_others' id=activity.other_user.profile.id %}">{{ activity.other_user.username }}</a>
-                                .
+                                at {{ activity.activity_datetime.date }} {{ activity.activity_datetime.time }}
                             {% elif activity.types_activities == 4 %}
                                 <a href = "{% url 'profile_page_others' id=activity.user.profile.id %}">{{ activity.user.username }}</a>
                                 is attending the event
                                 <a href = "{% url 'event_details' slug=activity.event.slug %}">{{ activity.event.name }}</a>
-                                .
+                                at {{ activity.activity_datetime.date }} {{ activity.activity_datetime.time }}
                             {% endif %}
                             </li>
                         {% empty %}

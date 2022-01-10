@@ -94,6 +94,11 @@ class Service(models.Model):
         return self.name
 
 class Comment(models.Model):
+    commenter = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_commenter', on_delete=models.CASCADE)
+    commentTaker = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_commentTaker',
+                                  on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, default="", null=True, blank=True, related_name='service_comment',
+                                on_delete=models.CASCADE)
     comment = models.TextField(max_length=300, blank=True, null=True)
     RATING_CHOICES = (
         (1, '1- Poor'),
@@ -110,6 +115,7 @@ class Notification(models.Model):
     service = models.ForeignKey(Service, default="", null=True, blank=True, related_name='service_notification', on_delete=models.CASCADE)
     event = models.ForeignKey(Event, default="", null=True, blank=True, related_name='event_notification', on_delete=models.CASCADE)
     other_user = models.ForeignKey(User, default="", null=True, blank=True, related_name='other_user_notification', on_delete=models.CASCADE)
+    notification_datetime = models.DateTimeField()
     NOTIFICATION_CHOICES = (
         (1, 'Applied to Your Service'),
         (2, 'Applied to Your Event'),
@@ -126,6 +132,7 @@ class Activity(models.Model):
     service = models.ForeignKey(Service, default="", null=True, blank=True, related_name='service_activities', on_delete=models.CASCADE)
     event = models.ForeignKey(Event, default="", null=True, blank=True, related_name='event_activities', on_delete=models.CASCADE)
     other_user = models.ForeignKey(User, default="", null=True, blank=True, related_name='other_user_activities', on_delete=models.CASCADE)
+    activity_datetime = models.DateTimeField()
     ACTIVITIES_CHOICES = (
         (1, 'Created a Service'),
         (2, 'Created an Event'),
@@ -135,8 +142,8 @@ class Activity(models.Model):
     types_activities = models.PositiveIntegerField(choices=ACTIVITIES_CHOICES)
 
 class User_Service_Status(models.Model):
-    user_serviceStatus = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_service_status_user')
-    service_serviceStatus = models.ManyToManyField(Service, default="", null=True, blank=True, related_name='user_service_status_service')
+    user_serviceStatus = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_service_status_user', on_delete=models.CASCADE)
+    service_serviceStatus = models.ForeignKey(Service, default="", null=True, blank=True, related_name='user_service_status_service', on_delete=models.CASCADE)
     USER_SERVICE_STATUS_CHOICES = (
         (1, 'Applied'),
         (2, 'Accepted'),
@@ -147,8 +154,8 @@ class User_Service_Status(models.Model):
     user_service_status = models.PositiveIntegerField(choices=USER_SERVICE_STATUS_CHOICES)
 
 class User_Event_Status(models.Model):
-    user_eventStatus = models.ManyToManyField(User, default="", null=True, blank=True, related_name='user_event_status_user')
-    event_eventStatus = models.ManyToManyField(Event, default="", null=True, blank=True, related_name='user_event_status_event')
+    user_eventStatus = models.ForeignKey(User, default="", null=True, blank=True, related_name='user_event_status_user', on_delete=models.CASCADE)
+    event_eventStatus = models.ForeignKey(Event, default="", null=True, blank=True, related_name='user_event_status_event', on_delete=models.CASCADE)
     USER_EVENT_STATUS_CHOICES = (
         (1, 'Applied'),
         (2, 'Accepted'),

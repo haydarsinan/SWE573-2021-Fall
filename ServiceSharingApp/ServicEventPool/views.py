@@ -1,15 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Service
-from .models import Event
-from .models import Notification
-from .models import Activity
-from .models import Media
-from .forms import LocationForm
-from .forms import EventForm
-from .forms import ServiceForm
-from .forms import CommentForm
-from .forms import MediaForm
-from .forms import UpdateProfilePersonalForm
+from .models import Service, Event, Notification, Activity, Media, User_Service_Status, User_Event_Status,Comment
+from .forms import LocationForm, EventForm, ServiceForm, CommentForm, MediaForm,UpdateProfilePersonalForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -60,10 +51,8 @@ def calendar(request, year, month):
 def update_user_profile_personal(request):
     if request.method == "POST":
         form = UpdateProfilePersonalForm(request.POST, request.FILES, instance=request.user.profile)
-        print("DENEME")
         if form.is_valid():
             form.save()
-            print("deneme")
             messages.success(request, "You successfully updated!")
             return redirect('home')
     else:
@@ -79,6 +68,7 @@ def profile_page(request):
     user = request.user
     services = Service.objects.all()
     events = Event.objects.all()
+    comments = Comment.objects.filter(Q(commentTaker=user))
     servicesCreated = services.filter(Q(service_provider=user))
     numberOfServicesCreated = servicesCreated.__len__()
     servicesApplied = services.filter(Q(applicants__username=user))
@@ -104,7 +94,8 @@ def profile_page(request):
                    'numberOfServicesCreated': numberOfServicesCreated,
                    'numberOfServicesApproved': numberOfServicesApproved,
                    'numberOfEventsCreated': numberOfEventsCreated,
-                   'numberOfEventsApproved': numberOfEventsApproved
+                   'numberOfEventsApproved': numberOfEventsApproved,
+                   'comments': comments
                    })
 
 def profile_page_others(request, id):
@@ -112,6 +103,7 @@ def profile_page_others(request, id):
     user = profile.user
     services = Service.objects.all()
     events = Event.objects.all()
+    comments = Comment.objects.filter(Q(commentTaker=user))
 
     servicesCreated = services.filter(Q(service_provider=user))
     numberOfServicesCreated = servicesCreated.__len__()
@@ -140,7 +132,8 @@ def profile_page_others(request, id):
                    'numberOfServicesCreated': numberOfServicesCreated,
                    'numberOfServicesApproved': numberOfServicesApproved,
                    'numberOfEventsCreated': numberOfEventsCreated,
-                   'numberOfEventsApproved': numberOfEventsApproved
+                   'numberOfEventsApproved': numberOfEventsApproved,
+                   'comments': comments
                    })
 
 def all_services(request):
@@ -216,7 +209,7 @@ def add_event(request):
             obj.event_provider = user
             obj.event_publish_date = time
             obj.save()
-            newActivity = Activity.objects.create(user=user, event=obj, types_activities=2)
+            newActivity = Activity.objects.create(user=user, event=obj, types_activities=2, activity_datetime=time)
             newActivity.save()
             return HttpResponseRedirect('/add_event?submitted=True')
     else:
@@ -240,7 +233,7 @@ def add_service(request):
             obj.service_provider = user
             obj.service_publish_date = time
             obj.save()
-            newActivity = Activity.objects.create(user=user, service=obj, types_activities=1)
+            newActivity = Activity.objects.create(user=user, service=obj, types_activities=1, activity_datetime=time)
             newActivity.save()
             return HttpResponseRedirect('/add_service?submitted=True')
     else:
@@ -259,9 +252,11 @@ def event_details(request, slug):
         event = get_object_or_404(Event, slug=slug)
         user = request.user
         event.applicants.add(user)
+        status = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
         context = {
             'event': event,
-            'user': user
+            'user': user,
+            'status': status
         }
         return render(request, 'ServicEventPool/event_details.html', context)
     else:
@@ -272,9 +267,12 @@ def event_details(request, slug):
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
     user = request.user
+    status = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
     return render(request, 'ServicEventPool/service_details.html',
                   {'service': service,
-                   'user': user})
+                   'user': user,
+                   'status': status
+                   })
 
 def request_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
@@ -284,6 +282,8 @@ def request_service(request, slug):
         currentBlockedCredit = user.profile.blockedCredit
         user.profile.blockedCredit = currentBlockedCredit + service.duration_credit
         user.profile.save()
+        newUserStatus = User_Service_Status.objects.create(user_serviceStatus=user, service_serviceStatus=service, user_service_status=1)
+        newUserStatus.save()
         context = {
             'service': service
         }
@@ -300,6 +300,8 @@ def request_back_service(request, slug):
     currentBlockedCredit = user.profile.blockedCredit
     user.profile.blockedCredit = currentBlockedCredit - service.duration_credit
     user.profile.save()
+    newUserStatus = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
+    newUserStatus.delete()
     messages.success(request, "You withdraw your request!")
     return HttpResponseRedirect('/service_details/' + slug)
 
@@ -320,8 +322,13 @@ def approve_applicant_service(request, slug, id):
     service.attendees.add(applicant)
     service.applicants.remove(applicant)
     applicants = service.applicants.all()
-    newActivity = Activity.objects.create(user=applicant, other_user=request.user, service=service, types_activities=3)
+    time = datetime.datetime.now()
+    newActivity = Activity.objects.create(user=applicant, other_user=request.user, service=service, types_activities=3,
+                                          activity_datetime=time)
     newActivity.save()
+    status = User_Service_Status.objects.get(user_serviceStatus=applicant, service_serviceStatus=service)
+    status.user_service_status = 2
+    status.save()
     context = {
         'service': service,
         'applicants': applicants
@@ -335,6 +342,9 @@ def unapprove_applicant_service(request, slug, id):
     service.attendees.remove(attendee)
     applicants = service.applicants.all()
     attendees = service.attendees.all()
+    status = User_Service_Status.objects.get(user_serviceStatus=attendee, service_serviceStatus=service)
+    status.user_service_status = 1
+    status.save()
     context = {
         'service': service,
         'applicants': applicants,
@@ -353,6 +363,9 @@ def decline_applicant_service(request, slug, id):
     currentBlockedCredit = applicant.profile.blockedCredit
     applicant.profile.blockedCredit = currentBlockedCredit - service.duration_credit
     applicant.profile.save()
+    status = User_Service_Status.objects.get(user_serviceStatus=applicant, service_serviceStatus=service)
+    status.user_service_status = 5
+    status.save()
     context = {
         'service': service,
         'applicants': applicants,
@@ -370,6 +383,9 @@ def decline_back_applicant_service(request, slug, id):
     currentBlockedCredit = applicant.profile.blockedCredit
     applicant.profile.blockedCredit = currentBlockedCredit + service.duration_credit
     applicant.profile.save()
+    status = User_Service_Status.objects.get(user_serviceStatus=applicant, service_serviceStatus=service)
+    status.user_service_status = 1
+    status.save()
     context = {
         'service': service,
         'applicants': applicants,
@@ -385,19 +401,25 @@ def approve_service_transaction(request, slug):
     currentServiceTakerCredit = user.profile.timeCredit
     currentServiceTakerBlockedCredit = user.profile.blockedCredit
     if user in service.attendees.all():
-
         submitted = False
         if request.method == "POST":
             form = CommentForm(request.POST)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.commenter = user
+                obj.commentTaker = service.service_provider
+                obj.service = service
+                obj.save()
                 user.profile.timeCredit = currentServiceTakerCredit - service.duration_credit
                 service.service_provider.profile.timeCredit = currentServiceProviderCredit + service.duration_credit
                 user.profile.blockedCredit = currentServiceTakerBlockedCredit - service.duration_credit
                 user.profile.save()
                 service.service_provider.profile.save()
+                status = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
+                status.user_service_status = 3
+                status.save()
                 # messages.success("Transaction is completed!")
-                return HttpResponseRedirect('/approve_service_transaction/' + slug +'?submitted=True')
+                return HttpResponseRedirect('/service_details/' + slug)
         else:
             form = CommentForm
         return render(request, 'ServicEventPool/approve_service_transaction.html', {
@@ -411,7 +433,8 @@ def attend_event(request, slug):
     event = get_object_or_404(Event, slug=slug)
     user = request.user
     event.applicants.add(user)
-
+    newUserStatus = User_Event_Status.objects.create(user_eventStatus=user, event_eventStatus=event, user_event_status= 1)
+    newUserStatus.save()
     context = {
         'event': event
     }
@@ -423,6 +446,8 @@ def attend_back_event(request, slug):
     event = get_object_or_404(Event, slug=slug)
     user = request.user
     event.applicants.remove(user)
+    newUserStatus = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
+    newUserStatus.delete()
     messages.success(request, "You withdraw your application!")
     return HttpResponseRedirect('/event_details/' + slug)
 
@@ -442,8 +467,13 @@ def approve_applicant_event(request, slug, id):
     event.attendees.add(applicant)
     event.applicants.remove(applicant)
     applicants = event.applicants.all()
-    newActivity = Activity.objects.create(user=applicant, other_user=request.user, event=event, types_activities=4)
+    time = datetime.datetime.now()
+    newActivity = Activity.objects.create(user=applicant, other_user=request.user, event=event, types_activities=4,
+                                          activity_datetime=time)
     newActivity.save()
+    status = User_Event_Status.objects.get(user_eventStatus=applicant, event_eventStatus=event)
+    status.user_event_status = 2
+    status.save()
     context = {
         'event': event,
         'applicants': applicants
@@ -457,6 +487,9 @@ def unapprove_applicant_event(request, slug, id):
     event.attendees.remove(attendee)
     applicants = event.applicants.all()
     attendees = event.attendees.all()
+    status = User_Event_Status.objects.get(user_eventStatus=attendee, event_eventStatus=event)
+    status.user_event_status = 1
+    status.save()
     context = {
         'event': event,
         'applicants': applicants,
@@ -472,6 +505,9 @@ def decline_applicant_event(request, slug, id):
     event.applicants.remove(applicant)
     applicants = event.applicants.all()
     attendees = event.attendees.all()
+    status = User_Event_Status.objects.get(user_eventStatus=applicant, event_eventStatus=event)
+    status.user_event_status = 5
+    status.save()
     context = {
         'event': event,
         'applicants': applicants,
@@ -486,6 +522,9 @@ def decline_back_applicant_event(request, slug, id):
     event.declinedList.remove(applicant)
     applicants = event.applicants.all()
     attendees = event.attendees.all()
+    status = User_Event_Status.objects.get(user_eventStatus=applicant, event_eventStatus=event)
+    status.user_event_status = 1
+    status.save()
     context = {
         'event': event,
         'applicants': applicants,

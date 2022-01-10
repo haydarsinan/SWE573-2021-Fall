@@ -88,11 +88,16 @@
               </div>
               <div class="card mt-3">
                 <ul class="list-group list-group-flush">
-                    <h5>Comments: </h5>
+                    <h5 style="text-align: center">Comments about Services: </h5>
                     {% for comment in comments %}
-                    <li>
-
-                    </li>
+                        <div style="text-align: center">
+                        <a style="font-size: smaller"><b>Service:</b> </a>
+                        <a style="font-size: small" href="{% url 'service_details' comment.service.slug %}">{{ comment.service }}</a><br>
+                        <a style="font-size: small"><b>Score: </b>{{ comment.rating }}</a><br>
+                        <a style="font-size: small"><b>Comment: </b>{{ comment.comment }} <br> by user </a>
+                        <a style="font-size: small" href="{% url 'profile_page_others' comment.commenter.profile.id %}">{{ comment.commenter }}</a>
+                        </div>
+                        <hr>
                         {% empty %}
                         There is no comment yet.
                     {% endfor %}

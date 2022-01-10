@@ -91,6 +91,7 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = "__all__"
+        exclude = ('commenter', 'commentTaker', 'service', 'event')
 
 class MediaForm(ModelForm):
     class Meta:

@@ -9,33 +9,33 @@
                                 <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
                                 applied to your service
                                 <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 2 %}
                                 <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
                                 applied to your event
                                 <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 3 %}
                                 Your application is approved for the service
                                 <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 4 %}
                                 Your application is approved for the event
                                 <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 5 %}
                                 <a href = "{% url 'profile_page_others' id=notification.user.profile.id %}">{{ notification.user.username }}</a>
                                 confirmed time credit transaction for the service
                                 <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 6 %}
                                 Your application is declined for the service
                                 <a href = "{% url 'service_details' slug=notification.service.slug %}">{{ notification.service.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% elif notification.types_notifications == 7 %}
                                 Your application is declined for the event
                                 <a href = "{% url 'event_details' slug=notification.event.slug %}">{{ notification.event.name }}</a>
-                                .
+                                at {{ notification.notification_datetime.date }} {{ notification.notification_datetime.time }}
                             {% endif %}
                             </li>
                         {% empty %}

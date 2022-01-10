@@ -474,7 +474,9 @@ b, strong {
                     {% endif %}
 
                 {% if user in service.attendees.all %}
+                    {% if status.user_service_status != 3 %}
                         <a class="btn btn-primary" href="{% url 'approve_service_transaction' service.slug %}">Approve Transaction</a>
+                {% endif %}
                 {% endif %}
                 </p>
             </div><!-- / project-info-box -->
