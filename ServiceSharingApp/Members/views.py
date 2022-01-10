@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from Members.forms import signUpForm, editProfilePage
 from ServicEventPool.models import Profile
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 
 def login_user(request):
@@ -49,15 +51,29 @@ def register_user(request):
 
 def update_user(request):
     if request.method == "POST":
-        form = editProfilePage(request.POST)
+        form = editProfilePage(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "You successfully updated!")
             return redirect('home')
     else:
-        user = request.user
-        form = editProfilePage(initial={'username': user.username, 'first_name': user.first_name,
-                                        'last_name': user.last_name, 'email': user.email})
+        form = editProfilePage(instance=request.user)
     return render(request, 'authentication/update_profile.html', {
         'form': form,
+    })
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'The password is not updated!')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'authentication/change_password.html', {
+        'form': form
     })

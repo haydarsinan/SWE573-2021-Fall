@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ServicEventPool',
     'Members',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +166,11 @@ STATICFILES_DIRS = [BASE_DIR / 'ServicEventPool/static/']
 MEDIA_URL = '/images/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'ServicEventPool/images/')
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dh6yx0bh0',
+    'API_KEY': '912891237496922',
+    'API_SECRET': 'p0RJuaYjwmFZLvVMzHdbzdQCA1I'
+}

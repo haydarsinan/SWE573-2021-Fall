@@ -9,6 +9,7 @@ from .forms import EventForm
 from .forms import ServiceForm
 from .forms import CommentForm
 from .forms import MediaForm
+from .forms import UpdateProfilePersonalForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -20,10 +21,10 @@ import datetime
 def home(request):
     serviceName = "I like Baklava with Olive Oil :)"
     medias = Media.objects.all()
-    if medias.get(pk=1):
-        media1 = medias.get(pk=1)
-    if medias.get(pk=2):
-        media2 = medias.get(pk=2)
+    if medias.get(name='homePage1'):
+        media1 = medias.get(name='homePage1')
+    if medias.get(name='homePage2'):
+        media2 = medias.get(name='homePage2')
     return render(request, 'ServicEventPool/home.html', {
         "serviceName_Here": serviceName,
         "medias": medias,
@@ -55,6 +56,23 @@ def calendar(request, year, month):
         "year_Here": year,
         "month_Here": month
     })
+
+def update_user_profile_personal(request):
+    if request.method == "POST":
+        form = UpdateProfilePersonalForm(request.POST, request.FILES, instance=request.user.profile)
+        print("DENEME")
+        if form.is_valid():
+            form.save()
+            print("deneme")
+            messages.success(request, "You successfully updated!")
+            return redirect('home')
+    else:
+        form = UpdateProfilePersonalForm(instance=request.user.profile)
+    return render(request, 'ServicEventPool/update_profile_personal.html', {
+        'form': form,
+    })
+
+
 
 
 def profile_page(request):

@@ -18,6 +18,7 @@ urlpatterns = [
     path('events', views.all_events, name="event_list"),
     path('profile', views.profile_page, name="profile_page"),
     path('profile/<int:id>', views.profile_page_others, name="profile_page_others"),
+    path('update_profile_personal', views.update_user_profile_personal, name="update_user_profile_personal"),
 
     path('mediaUpload', views.mediaUpload, name="mediaUpload"),
 

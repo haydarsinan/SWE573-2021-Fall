@@ -14,7 +14,7 @@
 Edit Profile
 </h1>
 
-    <form action="{% url 'update_user' %}" method="post">
+    <form action="{% url 'update_user_profile_personal' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 

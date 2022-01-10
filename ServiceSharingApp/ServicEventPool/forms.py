@@ -5,6 +5,7 @@ from .models import Event
 from .models import Service
 from .models import Comment
 from .models import Media
+from .models import Profile
 
 
 class LocationForm(ModelForm):
@@ -95,3 +96,17 @@ class MediaForm(ModelForm):
     class Meta:
         model = Media
         fields = "__all__"
+
+class UpdateProfilePersonalForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = "__all__"
+        exclude = ('user', 'twitterURL', 'linkedinURL', 'instagramURL', 'timeCredit', 'blockedCredit')
+
+        labels = {
+            'bio': 'Short Biography',
+        }
+
+        widgets = {
+            'bio': forms.TextInput(attrs={'style': 'width:500px; height:100px'}),
+        }
