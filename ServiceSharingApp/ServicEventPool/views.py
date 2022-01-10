@@ -252,7 +252,7 @@ def event_details(request, slug):
         event = get_object_or_404(Event, slug=slug)
         user = request.user
         event.applicants.add(user)
-        status = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
+        status = User_Event_Status.objects.create(user_eventStatus=user, event_eventStatus=event, user_event_status=4)
         context = {
             'event': event,
             'user': user,
@@ -267,7 +267,7 @@ def event_details(request, slug):
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
     user = request.user
-    status = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
+    status = User_Service_Status.objects.create(user_serviceStatus=user, service_serviceStatus=service, user_service_status=4)
     return render(request, 'ServicEventPool/service_details.html',
                   {'service': service,
                    'user': user,
@@ -282,7 +282,8 @@ def request_service(request, slug):
         currentBlockedCredit = user.profile.blockedCredit
         user.profile.blockedCredit = currentBlockedCredit + service.duration_credit
         user.profile.save()
-        newUserStatus = User_Service_Status.objects.create(user_serviceStatus=user, service_serviceStatus=service, user_service_status=1)
+        newUserStatus = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
+        newUserStatus.user_service_status = 1
         newUserStatus.save()
         context = {
             'service': service
@@ -301,7 +302,8 @@ def request_back_service(request, slug):
     user.profile.blockedCredit = currentBlockedCredit - service.duration_credit
     user.profile.save()
     newUserStatus = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
-    newUserStatus.delete()
+    newUserStatus.user_service_status = 4
+    newUserStatus.save()
     messages.success(request, "You withdraw your request!")
     return HttpResponseRedirect('/service_details/' + slug)
 
@@ -433,7 +435,8 @@ def attend_event(request, slug):
     event = get_object_or_404(Event, slug=slug)
     user = request.user
     event.applicants.add(user)
-    newUserStatus = User_Event_Status.objects.create(user_eventStatus=user, event_eventStatus=event, user_event_status= 1)
+    newUserStatus = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
+    newUserStatus.user_event_status = 1
     newUserStatus.save()
     context = {
         'event': event
@@ -447,7 +450,8 @@ def attend_back_event(request, slug):
     user = request.user
     event.applicants.remove(user)
     newUserStatus = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
-    newUserStatus.delete()
+    newUserStatus.user_event_status = 4
+    newUserStatus.save()
     messages.success(request, "You withdraw your application!")
     return HttpResponseRedirect('/event_details/' + slug)
 
