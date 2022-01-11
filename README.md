@@ -1,5 +1,8 @@
 Before anything else, deployed application link is: http://servicevent.online
 
+To build and run the application, you should check the read.me file in the application file.
+Direct Link to [Readme File](https://github.com/haydarsinan/SWE573-2021-Fall/tree/main/ServiceSharingApp#readme)
+
 # SWE573-2021-Fall
 Boğaziçi University SWE573-2021-Fall Course Project Repo by Haydar Sinan Yıldırım
 
