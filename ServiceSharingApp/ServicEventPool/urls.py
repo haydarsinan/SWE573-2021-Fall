@@ -36,6 +36,9 @@ urlpatterns = [
     path('delete_service/<slug:slug>', views.delete_service, name="delete_service"),
     path('delete_event/<slug:slug>', views.delete_event, name="delete_event"),
 
+    path('update_service/<slug:slug>', views.update_service, name="update_service"),
+    path('update_event/<slug:slug>', views.update_event, name="update_event"),
+
     path('event_details/<slug:slug>', views.event_details, name="event_details"),
     path('service_details/<slug:slug>', views.service_details, name="service_details"),
 

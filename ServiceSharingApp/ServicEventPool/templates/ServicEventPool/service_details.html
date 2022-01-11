@@ -471,6 +471,7 @@ b, strong {
                     {% if service.service_provider == user %}
                             <br><br><a class="btn btn-primary" href="{% url 'approve_service' service.slug %}">Manage Applications</a>
                             <a class="btn btn-danger" href="{% url 'delete_service' service.slug %}">Delete Service</a>
+                            <a class="btn btn-warning" href="{% url 'update_service' service.slug %}">Update Service</a>
                     {% endif %}
 
                 {% if user in service.attendees.all %}

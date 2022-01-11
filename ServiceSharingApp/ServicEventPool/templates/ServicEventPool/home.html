@@ -23,7 +23,11 @@
                     <div class="intro">
                         <h1 class="text-center">Welcome to ServicEvent Online!!</h1>
                         {% load static %}
-                        <p class="text-center"><span class="by">created by</span> <a href="https://github.com/haydarsinan">Haydar Sinan Yıldırım</a><span class="date"> January 8th, 2022 </span></p><img class="img-fluid rounded" src="{{ media1.media_pic.url }}"></div>
+                        <p class="text-center"><span class="by">created by</span> <a href="https://github.com/haydarsinan">Haydar Sinan Yıldırım</a><span class="date"> January 8th, 2022 </span></p>
+{#                        <img class="img-fluid rounded" src="{{ media1.media_pic.url }}">#}
+                        <img class="img-fluid rounded" src="{% static 'servıcevent.png' %}">
+                    </div>
+
 
                     <br>
                     <div class="text">
@@ -34,7 +38,9 @@
                             Start with time credits <b>5 hours</b>. You can get time credit with offering service.
                             You can spend these time credit to get another services you desire.
                         </p>
-                        <img class="img-fluid rounded" src="{{ media2.media_pic.url }}">
+{#                        <img class="img-fluid rounded" src="{{ media2.media_pic.url }}">#}
+                        {% load static %}
+                        <img class="img-fluid rounded" src="{% static 'eventsLogo.jpeg' %}">
                         <h2>Create and Attend Events</h2>
                         <p>In Servicevent Platform, people can create and share events other members. You can
                         choose any events to join and socialize with others.</p>

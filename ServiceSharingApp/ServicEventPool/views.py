@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Service, Event, Notification, Activity, Media, User_Service_Status, User_Event_Status,Comment
-from .forms import LocationForm, EventForm, ServiceForm, CommentForm, MediaForm,UpdateProfilePersonalForm
+from .forms import LocationForm, EventForm, ServiceForm, CommentForm, MediaForm,UpdateProfilePersonalForm, UpdateServiceForm, UpdateEventForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -12,15 +12,15 @@ import datetime
 def home(request):
     serviceName = "I like Baklava with Olive Oil :)"
     medias = Media.objects.all()
-    if medias.get(name='homePage1'):
-        media1 = medias.get(name='homePage1')
-    if medias.get(name='homePage2'):
-        media2 = medias.get(name='homePage2')
+    # if medias.get(name='homePage1'):
+    #     media1 = medias.get(name='homePage1')
+    # if medias.get(name='homePage2'):
+    #     media2 = medias.get(name='homePage2')
     return render(request, 'ServicEventPool/home.html', {
         "serviceName_Here": serviceName,
         "medias": medias,
-        "media1": media1,
-        "media2": media2
+        # "media1": media1,
+        # "media2": media2
     })
 
 def mediaUpload(request):
@@ -592,3 +592,31 @@ def delete_event(request, slug):
     event = get_object_or_404(Event, slug=slug)
     event.delete()
     return HttpResponseRedirect('/events')
+
+def update_service(request, slug):
+    service = get_object_or_404(Service, slug=slug)
+    if request.method == "POST":
+        form = UpdateServiceForm(request.POST, request.FILES, instance=service)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You successfully updated!")
+            return HttpResponseRedirect('/services')
+    else:
+        form = UpdateServiceForm(instance=service)
+    return render(request, 'ServicEventPool/update_service.html', {
+        'form': form,
+        'service': service
+    })
+
+def update_event(request):
+    if request.method == "POST":
+        form = UpdateProfilePersonalForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You successfully updated!")
+            return redirect('home')
+    else:
+        form = UpdateProfilePersonalForm(instance=request.user.profile)
+    return render(request, 'ServicEventPool/update_profile_personal.html', {
+        'form': form,
+    })
