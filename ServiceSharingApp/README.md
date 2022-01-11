@@ -10,14 +10,7 @@ $ docker exec -it servicesharingapp-web-1 /bin/bash
 $ python manage.py migrate
 ```
 
-
-
-```bash
-python manage.py migrate
-Create Tables from Models:  python manage.py makemigrations
-python manage.py migrate
-```
-
+Alternative Way:
 ## How to run on Docker, Last Line is CLI in Docker
 
 ```bash
@@ -25,4 +18,5 @@ $ docker rmi -f $(docker images -a -q)
 $ docker container prune
 $ docker-compose up --build
 $ docker exec -it servicesharingapp_web_1 /bin/bash
+$ python manage.py migrate
 ```
