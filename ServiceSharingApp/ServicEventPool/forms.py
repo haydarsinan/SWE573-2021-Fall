@@ -49,7 +49,7 @@ class EventForm(ModelForm):
             'event_publish_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Publish Date'}),
             'description': forms.TextInput(attrs={'placeholder': 'Description'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'slug'}),
-            'location': forms.widgets.Select(attrs={'placeholder': 'Location'}),
+            'location': forms.widgets.TextInput(attrs={'placeholder': 'Location of the Event', }),
             'attendees': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
         }
 
@@ -81,7 +81,7 @@ class ServiceForm(ModelForm):
             'service_publish_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Publish Date'}),
             'description': forms.TextInput(attrs={'placeholder': 'Description', 'style': 'width:500px'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'slug'}),
-            'location': forms.widgets.Select(attrs={'placeholder': 'Location'}),
+            'location': forms.widgets.TextInput(attrs={'placeholder': 'Location of the Service', }),
             'service_provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Service Provider'}),
             'duration_credit': forms.TextInput(attrs={'placeholder': 'Time Credit Requested'}),
         }
@@ -139,7 +139,7 @@ class UpdateServiceForm(ModelForm):
             'service_publish_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Publish Date'}),
             'description': forms.TextInput(attrs={'placeholder': 'Description', 'style': 'width:500px'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'slug'}),
-            'location': forms.widgets.Select(attrs={'placeholder': 'Location'}),
+            'location': forms.widgets.TextInput(attrs={'placeholder': 'Location of the Service', }),
             'service_provider': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Service Provider'}),
             'duration_credit': forms.TextInput(attrs={'placeholder': 'Time Credit Requested'}),
         }
@@ -170,6 +170,6 @@ class UpdateEventForm(ModelForm):
             'event_publish_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Publish Date'}),
             'description': forms.TextInput(attrs={'placeholder': 'Description'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'slug'}),
-            'location': forms.widgets.Select(attrs={'placeholder': 'Location'}),
+            'location': forms.widgets.TextInput(attrs={'placeholder': 'Location of the Event', }),
             'attendees': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
         }

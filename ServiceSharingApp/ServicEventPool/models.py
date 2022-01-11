@@ -28,7 +28,7 @@ class Profile(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=300, blank=True, null=True)
-    geoLocation = models.CharField(max_length=300, blank=True, null=True)
+    geoLocation = models.CharField(max_length=300, blank=True, null=True, default='41.083556 29.050598')
 
     def __str__(self):
         return self.name
@@ -47,7 +47,7 @@ class Event(models.Model):
     event_date = models.DateField()
     event_time = models.TimeField(default='00:00')
     duration = models.PositiveIntegerField();
-    location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
+    location = models.CharField(max_length=300, blank=True, null=True)
     event_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/eventPictures/")
     event_publish_date = models.CharField(max_length=300, blank=True, null=True)
     slug = AutoSlugField(populate_from='name', unique=True, default="")
@@ -73,7 +73,7 @@ class Service(models.Model):
     service_date = models.DateField()
     service_time = models.TimeField(default='00:00')
     duration_credit = models.PositiveIntegerField();
-    location = models.ForeignKey(Location, default="", on_delete=models.CASCADE)
+    location = models.CharField(max_length=300, blank=True, null=True)
     service_pic = models.ImageField(null=True, blank=True, upload_to="ServicEventPool/images/servicePictures/")
     service_publish_date = models.CharField(max_length=300, blank=True, null=True)
     slug = AutoSlugField(populate_from='name', unique=True, default="")

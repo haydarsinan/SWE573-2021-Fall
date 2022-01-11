@@ -83,27 +83,27 @@ WSGI_APPLICATION = 'ServiceSharingApp.wsgi.application'
 # }
 
 #Docker PostgreSQL Database Settings
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'db',
-#     }
-# }
-
-#Local PostgreSQL Database Settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres2',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': '1175103',
-        'HOST': 'localhost',
-
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
     }
 }
+
+#Local PostgreSQL Database Settings
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres2',
+#         'USER': 'postgres',
+#         'PASSWORD': '1175103',
+#         'HOST': 'localhost',
+#
+#     }
+# }
 
 # HEROKU PostgreSQL Database Settings
 # DATABASES = {

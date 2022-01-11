@@ -267,6 +267,9 @@ def event_details(request, slug):
         user = request.user
         event.applicants.add(user)
         status = User_Event_Status.objects.create(user_eventStatus=user, event_eventStatus=event, user_event_status=4)
+        query = User_Event_Status.objects.filter(Q(user_eventStatus__username=user.username) & Q(event_eventStatus=event))
+        if query.__len__()>1:
+            status.delete()
         context = {
             'event': event,
             'user': user,
@@ -281,7 +284,11 @@ def event_details(request, slug):
 def service_details(request, slug):
     service = get_object_or_404(Service, slug=slug)
     user = request.user
-    status = User_Service_Status.objects.create(user_serviceStatus=user, service_serviceStatus=service, user_service_status=4)
+    status = User_Service_Status.objects.create(user_serviceStatus=user, service_serviceStatus=service,
+                                                user_service_status=4)
+    query = User_Service_Status.objects.filter(Q(user_serviceStatus__username=user.username) & Q(service_serviceStatus=service))
+    if query.__len__()>1:
+        status.delete()
     return render(request, 'ServicEventPool/service_details.html',
                   {'service': service,
                    'user': user,
