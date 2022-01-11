@@ -173,8 +173,11 @@ def eventSearch(request):
 
 def notifications(request):
     notificationList = Notification.objects.filter(user=request.user)
+    user = request.user
     return render(request, 'ServicEventPool/notifications.html',
-                  {'notificationList': notificationList})
+                  {'notificationList': notificationList,
+                   'user': user
+                   })
 
 def newsFeed(request):
     activityList = Activity.objects.filter(user=request.user)
@@ -277,6 +280,7 @@ def service_details(request, slug):
 def request_service(request, slug):
     service = get_object_or_404(Service, slug=slug)
     user = request.user
+    time = datetime.datetime.now()
     if (user.profile.timeCredit-user.profile.blockedCredit)>=service.duration_credit:
         service.applicants.add(user)
         currentBlockedCredit = user.profile.blockedCredit
@@ -285,6 +289,9 @@ def request_service(request, slug):
         newUserStatus = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
         newUserStatus.user_service_status = 1
         newUserStatus.save()
+        newNotification = Notification.objects.create(user=user, service=service, types_notifications= 1,
+                                                      notification_datetime=time, other_user=service.service_provider)
+        newNotification.save()
         context = {
             'service': service
         }
@@ -331,6 +338,9 @@ def approve_applicant_service(request, slug, id):
     status = User_Service_Status.objects.get(user_serviceStatus=applicant, service_serviceStatus=service)
     status.user_service_status = 2
     status.save()
+    newNotification = Notification.objects.create(user=applicant, service=service,
+                                                  notification_datetime=time, types_notifications=3)
+    newNotification.save()
     context = {
         'service': service,
         'applicants': applicants
@@ -368,6 +378,10 @@ def decline_applicant_service(request, slug, id):
     status = User_Service_Status.objects.get(user_serviceStatus=applicant, service_serviceStatus=service)
     status.user_service_status = 5
     status.save()
+    time = datetime.datetime.now()
+    newNotification = Notification.objects.create(user=applicant, service=service, notification_datetime=time,
+                                                  types_notifications=6)
+    newNotification.save()
     context = {
         'service': service,
         'applicants': applicants,
@@ -420,6 +434,10 @@ def approve_service_transaction(request, slug):
                 status = User_Service_Status.objects.get(user_serviceStatus=user, service_serviceStatus=service)
                 status.user_service_status = 3
                 status.save()
+                time = datetime.datetime.now()
+                newNotification = Notification.objects.create(user=user, service=service, notification_datetime=time,
+                                                              types_notifications=5, other_user=service.service_provider)
+                newNotification.save()
                 # messages.success("Transaction is completed!")
                 return HttpResponseRedirect('/service_details/' + slug)
         else:
@@ -438,6 +456,10 @@ def attend_event(request, slug):
     newUserStatus = User_Event_Status.objects.get(user_eventStatus=user, event_eventStatus=event)
     newUserStatus.user_event_status = 1
     newUserStatus.save()
+    time = datetime.datetime.now()
+    newNotification = Notification.objects.create(user=user, event=event, notification_datetime=time,
+                                                  types_notifications=2, other_user=event.event_provider)
+    newNotification.save()
     context = {
         'event': event
     }
@@ -478,6 +500,9 @@ def approve_applicant_event(request, slug, id):
     status = User_Event_Status.objects.get(user_eventStatus=applicant, event_eventStatus=event)
     status.user_event_status = 2
     status.save()
+    newNotification = Notification.objects.create(user=applicant, event=event, notification_datetime=time,
+                                                  types_notifications=4)
+    newNotification.save()
     context = {
         'event': event,
         'applicants': applicants
@@ -512,6 +537,10 @@ def decline_applicant_event(request, slug, id):
     status = User_Event_Status.objects.get(user_eventStatus=applicant, event_eventStatus=event)
     status.user_event_status = 5
     status.save()
+    time = datetime.datetime.now()
+    newNotification = Notification.objects.create(user=applicant, event=event, notification_datetime=time,
+                                                  types_notifications=7)
+    newNotification.save()
     context = {
         'event': event,
         'applicants': applicants,

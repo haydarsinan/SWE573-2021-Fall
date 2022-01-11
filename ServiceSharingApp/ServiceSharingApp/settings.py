@@ -90,7 +90,6 @@ WSGI_APPLICATION = 'ServiceSharingApp.wsgi.application'
 #         'USER': 'postgres',
 #         'PASSWORD': 'postgres',
 #         'HOST': 'db',
-#         'PORT': 5432
 #     }
 # }
 
