@@ -1,0 +1,21 @@
+{% extends 'ServicEventPool/base.html' %}
+
+{% block content %}
+
+<legend class="border-bottom mb-5">Profiles you Searched:<br>
+                        {% for profile in profile_list %}
+                            <li>
+                                {% if profile.profile_pic %}
+                                    <img class="center rounded-circle account-img" src="{{ profile.profile_pic.url }}" width="60" height="60">
+                                {% else %}
+                                    {% load static %}
+                                    <img class="center rounded-circle account-img" src="{% static 'profilePic.png' %}" width="60" height="60">
+                                {% endif %}
+                            <a href="{% url 'profile_page_others' id=profile.user.profile.id %}">{{ profile.user.first_name }} {{ profile.user.last_name }}</a>
+                            </li>
+                        {% empty %}
+                        No profiles founded! Try again.
+                        {% endfor %}
+                    </legend>
+
+{% endblock %}

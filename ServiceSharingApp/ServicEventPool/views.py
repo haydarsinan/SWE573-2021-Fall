@@ -163,7 +163,6 @@ def serviceSearch(request):
 def eventSearch(request):
     event_list = Event.objects.all()
     searchText = request.GET.get('eventSearch')
-    print(searchText)
     event_list = Event.objects.order_by('-id')
     if searchText:
         event_list =  event_list.filter(Q(name__icontains=searchText) |
@@ -171,8 +170,19 @@ def eventSearch(request):
     return render(request, 'ServicEventPool/event_list.html',
                   {'event_list': event_list})
 
+def profileSearch(request):
+    profile_list = Profile.objects.all()
+    searchText = request.GET.get('profileSearch')
+    if searchText:
+        profile_list = profile_list.filter(Q(user__first_name__icontains=searchText) |
+                                           Q(user__username__icontains=searchText) |
+                                           Q(user__last_name__icontains=searchText))
+    return render(request, 'ServicEventPool/profile_search_result.html',
+                  {'profile_list': profile_list})
+
 def notifications(request):
-    notificationList = Notification.objects.filter(user=request.user)
+    notificationList = Notification.objects.order_by('-id')
+    notificationList = notificationList.filter(user=request.user)
     user = request.user
     return render(request, 'ServicEventPool/notifications.html',
                   {'notificationList': notificationList,
@@ -180,7 +190,8 @@ def notifications(request):
                    })
 
 def newsFeed(request):
-    activityList = Activity.objects.filter(user=request.user)
+    activityList = Activity.objects.order_by('-id')
+    activityList = activityList.filter(user=request.user)
     return render(request, 'ServicEventPool/news_feed.html',
                   {'activityList': activityList})
 

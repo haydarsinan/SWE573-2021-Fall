@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('eventSearch', views.eventSearch, name="eventSearch"),
     path('serviceSearch', views.serviceSearch, name="serviceSearch"),
+    path('profileSearch', views.profileSearch, name="profileSearch"),
 
     path('notifications', views.notifications, name="notifications"),
     path('newsFeed', views.newsFeed, name="newsFeed"),
