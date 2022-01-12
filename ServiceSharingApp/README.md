@@ -6,6 +6,7 @@ https://servicevent.online/
 ## How to build and run the application on Docker
 ```bash
 $ docker-compose up -d --build
+$ docker-compose up
 $ docker exec -it servicesharingapp-web-1 /bin/bash
 $ python manage.py migrate
 ```
